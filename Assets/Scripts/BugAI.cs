@@ -7,7 +7,7 @@ public class BugAI : MonoBehaviour {
 
     float speed = 1;
     Vector2 direction;
-
+    bool can_bite = false;
     //time he needs to wait before eating another chunk
     float cooldown = 0.4f;
     float temp_cool_down;
@@ -17,6 +17,7 @@ public class BugAI : MonoBehaviour {
         direction = (transform.position - pad.transform.position).normalized;
 
         StartCoroutine(StartBiting());
+        StartCoroutine(CheckForEnd());
 	}
 
     public IEnumerator StartBiting(){
@@ -32,12 +33,21 @@ public class BugAI : MonoBehaviour {
         }
     }
 
-
-    void AttemptBite(){
-        if(pad.CanLand(transform.position,10)){
-            speed = Random.Range(0.3f,0.65f);
-            pad.EatLilypod(transform.position,Random.Range(9f,20f));
-            cooldown = temp_cool_down;
+    IEnumerator CheckForEnd(){
+        while(can_bite){
+            can_bite = pad.CanLand(transform.position, 10);
+            if(!can_bite)
+                StopAllCoroutines();
+            yield return new WaitForSeconds(4);
+        }
+    }
+    void AttemptBite() {
+        if(!can_bite)
+            can_bite = pad.CanLand(transform.position, 10);
+        if(can_bite){
+            speed = Random.Range(0.3f, 0.65f);
+            pad.EatLilypod(transform.position, Random.Range(7f, 17f));
+            cooldown = temp_cool_down;   
         }
     }
 }

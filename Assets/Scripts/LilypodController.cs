@@ -7,6 +7,8 @@ public class LilypodController : MonoBehaviour {
     public Texture2D origin;
     private Texture2D source;
     int pixel_eat;
+    int width;
+    int height;
 
     private void OnEnable()
     {
@@ -26,12 +28,12 @@ public class LilypodController : MonoBehaviour {
         int xPixel = Mathf.RoundToInt(pos.x * lilyRenderer.sprite.pixelsPerUnit);
         int yPixel = Mathf.RoundToInt(pos.y * lilyRenderer.sprite.pixelsPerUnit);
 
-        for(int x = 0; x < origin.width; x++) {
-            for(int y = 0; y < origin.height; y++) {
+        for(int x = 0; x < width; x++) {
+            for(int y = 0; y < height; y++) {
                 
-                Vector2 pixels = new Vector2(x - (origin.width / 2f), y - (origin.height / 2f));
+                Vector2 pixels = new Vector2(x - (width / 2f), y - (height / 2f));
 
-                if(Vector2.Distance(pixels,new Vector2(xPixel,yPixel)) < range){
+                if(ManatthanDistance(pixels,new Vector2(xPixel,yPixel)) < range){
                     source.SetPixel(x, y, Color.clear);
                     pixel_eat++;
                 }
@@ -43,9 +45,6 @@ public class LilypodController : MonoBehaviour {
 
     //return true if you have space to 
     public bool CanLand(Vector2 w_pos,float radious){
-        if(Vector2.Distance(transform.position, w_pos) > radious / 10f)
-            return false;
-        
         Vector3 pos = w_pos;
         pos.z = transform.position.z;
         pos = transform.InverseTransformPoint(pos);
@@ -53,18 +52,22 @@ public class LilypodController : MonoBehaviour {
         int xPixel = Mathf.RoundToInt(pos.x * lilyRenderer.sprite.pixelsPerUnit);
         int yPixel = Mathf.RoundToInt(pos.y * lilyRenderer.sprite.pixelsPerUnit);
 
+        if(ManatthanDistance(new Vector2(xPixel, yPixel), Vector2.one) > width)
+            return false;
         int good_pixel = 0;
         int bad_pixel = PixelsInRange(radious);
 
-        for(int x = 0; x < origin.width; x++) {
-            for(int y = 0; y < origin.height; y++) {
+        for(int x = 0; x < width; x++) {
+            for(int y = 0; y < height; y++) {
 
-                Vector2 pixels = new Vector2(x - (origin.width / 2f), y - (origin.height / 2f));
+                Vector2 pixels = new Vector2(x - (width / 2f), y - (height / 2f));
 
-                if(Vector2.Distance(pixels, new Vector2(xPixel, yPixel)) < radious) {
+                if(ManatthanDistance(pixels, new Vector2(xPixel, yPixel)) < radious) {
                     if(source.GetPixel(x, y) != Color.clear) {
                         good_pixel++;
                         bad_pixel--;
+                        if(good_pixel > bad_pixel)
+                            return true;
                     }
                 }
             }
@@ -75,14 +78,22 @@ public class LilypodController : MonoBehaviour {
         else
             return true;
     }
-
+    float ManatthanDistance(Vector2 a,Vector2 b){
+        return Abs(a.x - b.x) + Abs(a.y - b.y);
+    }
+    float Abs(float n){
+        if(n < 0)
+            return -n;
+        else
+            return n;
+    }
     //how many pixels can we count in a speecific range
     int PixelsInRange(float range){
         int n = 0;
-        for(int x = 0; x < origin.width; x++) {
-            for(int y = 0; y < origin.height; y++) {
-                Vector2 pixels = new Vector2(x - (origin.width / 2f), y - (origin.height / 2f));
-                if(Vector2.Distance(pixels, new Vector2(0,0)) < range)
+        for(int x = width/2; x < width; x++) {
+            for(int y = height/2 ; y < height; y++) {
+                Vector2 pixels = new Vector2(x - (width / 2f), y - (height / 2f));
+                if(ManatthanDistance(pixels, new Vector2(0,0)) < range)
                     n++;
             }
         }
@@ -93,14 +104,16 @@ public class LilypodController : MonoBehaviour {
     SpriteRenderer lilyRenderer;
     public void Init()
     {
-        source = new Texture2D(origin.width, origin.height);
-        for (int x = 0; x < origin.width; x++)
-            for (int y = 0; y < origin.height; y++)
+        width = origin.width;
+        height = origin.height;
+        source = new Texture2D(width, height);
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
                 source.SetPixel(x, y, origin.GetPixel(x, y));
         source.Apply();
 
         lilyRenderer = GetComponent<SpriteRenderer>();
-        lilyRenderer.sprite = Sprite.Create(source, new Rect(0, 0, origin.width, origin.height), new Vector2(0.5f, 0.5f));
+        lilyRenderer.sprite = Sprite.Create(source, new Rect(0, 0, width, height), new Vector2(0.5f, 0.5f));
     }
 
     Vector2 speed;
