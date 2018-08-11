@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager I;
 
+    public FrogController Frog;
+
     private void Awake()
     {
         if (I != null)
@@ -15,4 +17,6 @@ public class GameManager : MonoBehaviour {
             I = this;
         }
     }
+
+
 }

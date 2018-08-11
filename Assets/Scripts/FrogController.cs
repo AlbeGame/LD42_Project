@@ -27,7 +27,6 @@ public class FrogController : MonoBehaviour {
         position_reached = true;
 	}
 	
-
     void Update () {
         CalculateJumpScale();
         if(!position_reached)
@@ -58,6 +57,7 @@ public class FrogController : MonoBehaviour {
         else
             OnJumpCompleted();
     }
+
     void OnJumpCompleted(){
         position_reached = true;
         Debug.Log("Jump done");
