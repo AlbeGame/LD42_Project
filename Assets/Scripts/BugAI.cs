@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BugAI : MonoBehaviour {
-    public LilypodController pad;
+    public LilypadController pad;
 
     float speed = 1;
     Vector2 direction;
