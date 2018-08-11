@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 [ExecuteInEditMode]
@@ -20,7 +21,7 @@ public class LilypadController : MonoBehaviour {
         PoolCheck();
 	}
 
-    public void EatLilypod(Vector2 world_point, float range){
+    public async void EatLilypod(Vector2 world_point, float range) {
         Vector3 pos = world_point;
         pos.z = transform.position.z;
         pos = transform.InverseTransformPoint(pos);
@@ -30,29 +31,28 @@ public class LilypadController : MonoBehaviour {
 
         for(int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
-                
                 Vector2 pixels = new Vector2(x - (width / 2f), y - (height / 2f));
-
-                if(ManatthanDistance(pixels,new Vector2(xPixel,yPixel)) < range){
+                if(ManatthanDistance(pixels, new Vector2(xPixel, yPixel)) < range) {
+                    if(pixel_eat % 30 == 0)
+                        await Task.Delay(1);
                     source.SetPixel(x, y, Color.clear);
                     pixel_eat++;
                 }
             }
         }
         source.Apply();
-        
+
     }
 
     //return true if you have space to 
-    public bool CanLand(Vector2 w_pos,float radious){
+    public bool CanLand(Vector2 w_pos, float radious) {
         Vector3 pos = w_pos;
         pos.z = transform.position.z;
         pos = transform.InverseTransformPoint(pos);
 
         int xPixel = Mathf.RoundToInt(pos.x * lilyRenderer.sprite.pixelsPerUnit);
         int yPixel = Mathf.RoundToInt(pos.y * lilyRenderer.sprite.pixelsPerUnit);
-
-        if(ManatthanDistance(new Vector2(xPixel, yPixel), Vector2.one) > width)
+        if(ManatthanDistance(new Vector2(xPixel, yPixel), Vector2.zero) > width / 1.9f)
             return false;
         int good_pixel = 0;
         int bad_pixel = PixelsInRange(radious);
@@ -78,22 +78,22 @@ public class LilypadController : MonoBehaviour {
         else
             return true;
     }
-    float ManatthanDistance(Vector2 a,Vector2 b){
+    float ManatthanDistance(Vector2 a, Vector2 b) {
         return Abs(a.x - b.x) + Abs(a.y - b.y);
     }
-    float Abs(float n){
+    float Abs(float n) {
         if(n < 0)
             return -n;
         else
             return n;
     }
     //how many pixels can we count in a speecific range
-    int PixelsInRange(float range){
+    int PixelsInRange(float range) {
         int n = 0;
-        for(int x = width/2; x < width; x++) {
-            for(int y = height/2 ; y < height; y++) {
+        for(int x = width / 2; x < width; x++) {
+            for(int y = height / 2; y < height; y++) {
                 Vector2 pixels = new Vector2(x - (width / 2f), y - (height / 2f));
-                if(ManatthanDistance(pixels, new Vector2(0,0)) < range)
+                if(ManatthanDistance(pixels, new Vector2(0, 0)) < range)
                     n++;
             }
         }
