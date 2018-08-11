@@ -41,7 +41,7 @@ public class BugsSpawner : MonoBehaviour {
         newlily.Init();
         //newlily.SetLilySpawner(this);
         newlily.transform.position = GetLilyOriginPosition();
-        newlily.SetSpeedVector((Camera.main.transform.position - newlily.transform.position + (Vector3)randomSpaceVector/100).normalized * 0.01f * LilysSpeed);
+        newlily.SetSpeedVector((Camera.main.transform.position - newlily.transform.position + (Vector3)randomSpaceVector/100).normalized * LilysSpeed);
         newlily.gameObject.SetActive(true);
     }
 

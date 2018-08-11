@@ -120,6 +120,7 @@ public class LilypadController : MonoBehaviour {
     public void SetSpeedVector(Vector2 _speed)
     {
         speed = _speed;
+        GetComponent<Rigidbody2D>().velocity = speed;
     }
 
     public void SetLilySpawner(LilypadSpawner _spawner)
@@ -130,7 +131,7 @@ public class LilypadController : MonoBehaviour {
     bool hasBeenRendered = false;
     private void Move()
     {
-        transform.localPosition += (Vector3)speed;
+        //transform.localPosition += (Vector3)speed;
 
         if (!hasBeenRendered && lilyRenderer.isVisible)
             hasBeenRendered = true;
