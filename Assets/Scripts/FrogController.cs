@@ -27,6 +27,7 @@ public class FrogController : MonoBehaviour {
         position_reached = true;
 	}
 	
+<<<<<<< HEAD
 
     void Update () {
         CalculateJumpScale();
@@ -43,6 +44,18 @@ public class FrogController : MonoBehaviour {
     void CalculateJumpScale(){
 
         progress = 0;
+=======
+	// Update is called once per frame
+	void Update () {
+        if(Input.GetKey(KeyCode.Mouse0)){
+            key_hold_time += Time.deltaTime; 
+        }
+        if(Input.GetKeyUp(KeyCode.Mouse0)){
+            IdentifyAction();
+            key_hold_time = 0;
+        }
+        float progress = 0;
+>>>>>>> 4ca995d77d37653bac3934c65d78bf39cda228d3
         if(mid_fade_pos != Vector2.zero) {
             progress = 1 - Vector2.Distance(transform.position, mid_fade_pos) / (start_dist / 2f);
             progress = Mathf.Clamp01(progress);
@@ -95,7 +108,6 @@ public class FrogController : MonoBehaviour {
         else
             scale_fade = max_scale;
     }
-    
 
     public void Jump(Vector2 direction,float force,Vector2 MaxScaleOnAir){
         max_scale = MaxScaleOnAir;
