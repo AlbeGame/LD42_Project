@@ -35,10 +35,6 @@ public class FrogController : MonoBehaviour {
 	
     }
 
-    private void LateUpdate() {
-        GetControls();
-    }
-
     float progress = 0;
     void CalculateJumpScale(){
 
@@ -66,13 +62,16 @@ public class FrogController : MonoBehaviour {
         position_reached = true;
         Debug.Log("Jump done");
     }
-    void GetControls(){
-        if(Input.GetKey(KeyCode.Mouse0))
-            key_hold_time += Time.deltaTime;
-        if(Input.GetKeyUp(KeyCode.Mouse0)) {
-            IdentifyAction();
-            key_hold_time = 0;
-        }
+
+    public void OnInputHold()
+    {
+        key_hold_time += Time.deltaTime;
+    }
+
+    public void OnInputRelease()
+    {
+        IdentifyAction();
+        key_hold_time = 0;
     }
 
     void IdentifyAction(){
@@ -96,7 +95,6 @@ public class FrogController : MonoBehaviour {
             scale_fade = max_scale;
     }
     
-
     public void Jump(Vector2 direction,float force,Vector2 MaxScaleOnAir){
         max_scale = MaxScaleOnAir;
         flag = false;
