@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour {
     public static GameManager I;
 
     public FrogController Frog;
+    public LilypadSpawner LilySpawner;
+
 
     private void Awake()
     {
@@ -18,5 +20,9 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-
+    private void Start()
+    {
+        LilySpawner.SpawnLilypad(Camera.main.transform.position, Vector3.zero);
+        Frog.SetParentLily(FindObjectOfType<LilypadController>());
+    }
 }

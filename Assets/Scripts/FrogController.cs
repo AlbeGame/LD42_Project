@@ -21,7 +21,13 @@ public class FrogController : MonoBehaviour {
 
     public bool flag;
     private bool position_reached;
+
+    LilypadController parentLily;
+    CircleCollider2D coll;
+
     void Start () {
+
+        coll = GetComponent<CircleCollider2D>();
         mid_fade_pos = Vector2.zero;
         fade_position = transform.position;
         position_reached = true;
@@ -60,7 +66,11 @@ public class FrogController : MonoBehaviour {
 
     void OnJumpCompleted(){
         position_reached = true;
-        Debug.Log("Jump done");
+
+        if (!parentLily.CanLand(transform.position, coll.radius / 2))
+            Debug.Log("Dead");
+        else
+            transform.parent = parentLily.transform;
     }
 
     public void OnInputHold()
@@ -95,7 +105,10 @@ public class FrogController : MonoBehaviour {
             scale_fade = max_scale;
     }
     
-    public void Jump(Vector2 direction,float force,Vector2 MaxScaleOnAir){
+    public void Jump(Vector2 direction,float force,Vector2 MaxScaleOnAir)
+    {
+        transform.parent = null;
+
         max_scale = MaxScaleOnAir;
         flag = false;
         position_reached = false;
@@ -110,5 +123,21 @@ public class FrogController : MonoBehaviour {
 
     public void Eat(){
         Debug.Log("Eating");
+    }
+
+    public void SetParentLily(LilypadController _parentLily)
+    {
+        parentLily = _parentLily;
+        transform.parent = parentLily.transform;
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (position_reached)
+            return;
+
+        LilypadController lily = other.GetComponent<LilypadController>();
+        if (lily != null)
+            parentLily = lily;
     }
 }

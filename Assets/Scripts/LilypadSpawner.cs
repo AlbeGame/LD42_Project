@@ -45,6 +45,24 @@ public class LilypadSpawner : MonoBehaviour {
         newlily.gameObject.SetActive(true);
     }
 
+    public void SpawnLilypad(Vector3 _position, Vector3 _speed)
+    {
+        LilypadController newlily;
+        if (lilypadsPull.Count <= 0)
+            newlily = Instantiate(Lilypad, transform).GetComponent<LilypadController>();
+        else
+        {
+            newlily = lilypadsPull[0];
+            lilypadsPull.RemoveAt(0);
+        }
+
+        newlily.Init();
+        newlily.SetLilySpawner(this);
+        newlily.transform.position = _position;
+        newlily.SetSpeedVector(_speed);
+        newlily.gameObject.SetActive(true);
+    }
+
     public void ReturnLilyToPull(LilypadController _lily)
     {
         lilypadsPull.Add(_lily);
