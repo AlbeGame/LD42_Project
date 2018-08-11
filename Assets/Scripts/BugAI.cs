@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BugAI : MonoBehaviour {
-    public LilypadController pad;
+    private LilypadController pad;
 
     SpriteRenderer bugRenderer;
     BugsSpawner bugSpawner;
@@ -16,17 +16,10 @@ public class BugAI : MonoBehaviour {
     float temp_cool_down;
 
     void Start () {
-        //--------Modifica qui------
-        pad = FindObjectOfType<LilypadController>();
-        //--------------------------
         temp_cool_down = cooldown;
-        direction = (transform.position - pad.transform.position).normalized;
-
         bugRenderer = GetComponent<SpriteRenderer>();
         bugSpawner = GetComponent<BugsSpawner>();
 
-        StartCoroutine(StartBiting());
-        StartCoroutine(CheckForEnd());
 	}
 
     public IEnumerator StartBiting(){
@@ -45,8 +38,11 @@ public class BugAI : MonoBehaviour {
     IEnumerator CheckForEnd(){
         while(can_bite){
             can_bite = pad.CanLand(transform.position, 10);
-            if(!can_bite)
+            if(!can_bite) {
                 StopAllCoroutines();
+                pad = null;
+                GetComponent<Rigidbody2D>().simulated = true;
+            }
             yield return new WaitForSeconds(4);
         }
     }
@@ -56,7 +52,8 @@ public class BugAI : MonoBehaviour {
         if(can_bite){
             speed = Random.Range(0.3f, 0.65f);
             pad.EatLilypod(transform.position, Random.Range(7f, 17f));
-            cooldown = temp_cool_down;   
+            cooldown = temp_cool_down;
+            transform.SetParent(null);
         }
     }
 
@@ -94,6 +91,19 @@ public class BugAI : MonoBehaviour {
                 Destroy(this.gameObject);
             else
                 bugSpawner.ReturnBugToPull(this);
+        }
+    }
+
+
+    private void OnCollisionEnter2D(Collision2D collision) {
+        
+        if(!pad && collision.gameObject.GetComponent<LilypadController>()){
+            GetComponent<Rigidbody2D>().simulated = false;
+            pad = collision.gameObject.GetComponent<LilypadController>();
+            direction = (transform.position - pad.transform.position).normalized;
+            StartCoroutine(StartBiting());
+            StartCoroutine(CheckForEnd());
+            transform.SetParent(collision.transform);
         }
     }
 }
