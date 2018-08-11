@@ -15,15 +15,22 @@ public class BugAI : MonoBehaviour {
     void Start () {
         temp_cool_down = cooldown;
         direction = (transform.position - pad.transform.position).normalized;
-	}
-	void Update () {
-        transform.position -= ((Vector3)direction * Time.deltaTime/2) * speed;
 
-        if(cooldown <= 0)
-            AttemptBite();
-        else
-            cooldown -= Time.deltaTime;
+        StartCoroutine(StartBiting());
 	}
+
+    public IEnumerator StartBiting(){
+        while(true){
+            transform.position -= ((Vector3)direction * Time.deltaTime / 2) * speed;
+
+            if(cooldown <= 0)
+                AttemptBite();
+            else
+                cooldown -= Time.deltaTime;
+            
+            yield return new WaitForEndOfFrame();
+        }
+    }
 
     void AttemptBite(){
         if(pad.CanLand(transform.position,10)){
