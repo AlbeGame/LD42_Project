@@ -7,14 +7,10 @@ public class LilypodController : MonoBehaviour {
     public Texture2D origin;
     private Texture2D source;
     int pixel_eat;
-	// Use this for initialization
-	void Start () {
-        Init();
-	}
-	
+
 	// Update is called once per frame
 	void Update () {
-
+        Move();
 	}
 
     void EatLilypod(Vector2 world_point, float range){
