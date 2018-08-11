@@ -108,7 +108,6 @@ public class FrogController : MonoBehaviour {
         start_dist = Vector2.Distance(transform.position, fade_position);
         mid_fade_pos = Vector2.Lerp(transform.position, fade_position, 0.5f);
         FlipScale();
-
     }
 
     public void Eat(){
