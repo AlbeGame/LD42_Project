@@ -13,12 +13,6 @@ public class WaterController : MonoBehaviour {
     void Start () {
         SetupRenderers();        
     }
-	
-	// Update is called once per frame
-	void Update () {
-        if (Input.GetMouseButtonDown(0))
-            UpdateTiling(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-	}
 
     public void UpdateTiling(Vector2 _newCenterPosition)
     {
@@ -88,6 +82,7 @@ public class WaterController : MonoBehaviour {
             for (int j = 0; j < 3; j++)
             {
                 SpriteRenderer newRend = CreateRender(Water);
+                newRend.sortingLayerID = SortingLayer.layers[0].id;
 
                 if (i != 1)
                     newRend.flipX = !newRend.flipX;
