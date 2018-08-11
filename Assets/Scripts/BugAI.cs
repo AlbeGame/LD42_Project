@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BugAI : MonoBehaviour {
-    public LilypodController pad;
+    public LilypadController pad;
+
+    SpriteRenderer bugRenderer;
+    BugsSpawner bugSpawner;
 
     float speed = 1;
     Vector2 direction;
@@ -13,8 +16,14 @@ public class BugAI : MonoBehaviour {
     float temp_cool_down;
 
     void Start () {
+        //--------Modifica qui------
+        pad = FindObjectOfType<LilypadController>();
+        //--------------------------
         temp_cool_down = cooldown;
         direction = (transform.position - pad.transform.position).normalized;
+
+        bugRenderer = GetComponent<SpriteRenderer>();
+        bugSpawner = GetComponent<BugsSpawner>();
 
         StartCoroutine(StartBiting());
         StartCoroutine(CheckForEnd());
@@ -48,6 +57,43 @@ public class BugAI : MonoBehaviour {
             speed = Random.Range(0.3f, 0.65f);
             pad.EatLilypod(transform.position, Random.Range(7f, 17f));
             cooldown = temp_cool_down;   
+        }
+    }
+
+    public void SetSpeed(Vector2 _speed)
+    {
+        GetComponent<Rigidbody2D>().velocity = _speed;
+    }
+
+    public void SetBugSpawner(BugsSpawner _spawner)
+    {
+        bugSpawner = _spawner;
+    }
+
+    bool hasBeenRendered;
+    float currentTimer;
+    private void PoolCheck()
+    {
+        if (!hasBeenRendered)
+        {
+            if (bugRenderer.isVisible)
+                hasBeenRendered = true;
+            else if (currentTimer > 20)
+            {
+                if (bugRenderer == null)
+                    Destroy(this.gameObject);
+                else
+                    bugSpawner.ReturnBugToPull(this);
+            }
+            else
+                currentTimer += Time.deltaTime;
+        }
+        else if (hasBeenRendered && !bugRenderer.isVisible)
+        {
+            if (bugRenderer == null)
+                Destroy(this.gameObject);
+            else
+                bugSpawner.ReturnBugToPull(this);
         }
     }
 }
