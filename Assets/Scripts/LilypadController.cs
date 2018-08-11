@@ -7,19 +7,37 @@ using UnityEngine;
 public class LilypadController : MonoBehaviour {
     public Texture2D origin;
     private Texture2D source;
-    int pixel_eat;
+    public int starting_pixels;
+    public int pixel_eat;
     int width;
     int height;
-
-    private void OnEnable()
-    {
+    private bool collasped;
+    private void OnEnable(){
         Init();
     }
+
 
     // Update is called once per frame
     void Update () {
         PoolCheck();
+        if(Collapse() && !collasped){
+            collasped = true;
+            Debug.Log("Collapsed");
+            DestroyLilypod();
+        }
 	}
+
+    bool Collapse(){
+        if(pixel_eat > starting_pixels/3)
+            return true;
+        else
+            return false;
+    }
+
+    public void DestroyLilypod(){
+        Destroy(gameObject);
+        //T.B.D
+    }
 
     public async void EatLilypod(Vector2 world_point, float range) {
         Vector3 pos = world_point;
@@ -63,7 +81,7 @@ public class LilypadController : MonoBehaviour {
                 Vector2 pixels = new Vector2(x - (width / 2f), y - (height / 2f));
 
                 if(ManatthanDistance(pixels, new Vector2(xPixel, yPixel)) < radious) {
-                    if(source.GetPixel(x, y) != Color.clear) {
+                    if((int)source.GetPixel(x, y).a != 0) {
                         good_pixel++;
                         bad_pixel--;
                         if(good_pixel > bad_pixel)
@@ -90,8 +108,8 @@ public class LilypadController : MonoBehaviour {
     //how many pixels can we count in a speecific range
     int PixelsInRange(float range) {
         int n = 0;
-        for(int x = width / 2; x < width; x++) {
-            for(int y = height / 2; y < height; y++) {
+        for(int x = 0; x < width; x++) {
+            for(int y = 0; y < height; y++) {
                 Vector2 pixels = new Vector2(x - (width / 2f), y - (height / 2f));
                 if(ManatthanDistance(pixels, new Vector2(0, 0)) < range)
                     n++;
@@ -114,11 +132,11 @@ public class LilypadController : MonoBehaviour {
 
         lilyRenderer = GetComponent<SpriteRenderer>();
         lilyRenderer.sprite = Sprite.Create(source, new Rect(0, 0, width, height), new Vector2(0.5f, 0.5f));
+        starting_pixels = ActivePixels();
     }
 
     Vector2 speed;
-    public void SetSpeedVector(Vector2 _speed)
-    {
+    public void SetSpeedVector(Vector2 _speed){
         speed = _speed;
         GetComponent<Rigidbody2D>().velocity = speed;
     }
@@ -153,5 +171,16 @@ public class LilypadController : MonoBehaviour {
             else
                 lilySpawner.ReturnLilyToPull(this);
         }
+    }
+
+    int ActivePixels(){
+        int n = 0;
+        for(int x = 0; x < width; x++) {
+            for(int y = 0 ; y < height; y++) {
+                if((int)origin.GetPixel(x,y).a != 0)
+                    n++;
+            }
+        }
+        return n;
     }
 }
