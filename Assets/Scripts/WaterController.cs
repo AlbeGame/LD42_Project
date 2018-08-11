@@ -1,33 +1,35 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class WaterController : MonoBehaviour {
 
-    public Sprite WaterShade;
-    SpriteRenderer wShadeRend1;
-    SpriteRenderer wShadeRend2;
-    public List<Sprite> WaterStains = new List<Sprite>();
-    List<SpriteRenderer> wStainsRends1 = new List<SpriteRenderer>();
-    List<SpriteRenderer> wStainsRends2 = new List<SpriteRenderer>();
+    public Sprite Water;
+    public Vector2 TileOffSet = Vector2.one;
+    List<SpriteRenderer> waterRenderers = new List<SpriteRenderer>();
 
-    public Sprite WaterWaves;
-    SpriteRenderer wWavesRend1;
-    SpriteRenderer wWavesRend2;
 
     // Use this for initialization
     void Start () {
-
-        wShadeRend1 = CreateRender(WaterShade, false);
-        wShadeRend1 = CreateRender(WaterShade, true);
-
-        for (int i = 0; i < WaterStains.Count; i++)
+        for (int i = 0; i < 3; i++)
         {
-            wStainsRends1.Add(CreateRender(WaterStains[i], false));
-            wStainsRends1.Add(CreateRender(WaterStains[i], true));
-        }
+            for (int j = 0; j < 3; j++)
+            {
+                SpriteRenderer newRend = CreateRender(Water);
 
-        wWavesRend1 = CreateRender(WaterWaves, false);
-        wWavesRend2 = CreateRender(WaterWaves, true);
+                if (i != 1)
+                    newRend.flipX = !newRend.flipX;
+                if(j != 1)
+                    newRend.flipY = !newRend.flipY;
+
+                newRend.transform.localPosition = new Vector3(
+                    (i-1) * TileOffSet.x,
+                    (j-1) * TileOffSet.y,
+                    0);
+
+                waterRenderers.Add(newRend);
+            }
+        }
     }
 	
 	// Update is called once per frame
@@ -40,19 +42,13 @@ public class WaterController : MonoBehaviour {
     /// </summary>
     /// <param name="_image"></param>
     /// <returns></returns>
-    SpriteRenderer CreateRender(Sprite _image, bool _flipAndDisplaced)
+    SpriteRenderer CreateRender(Sprite _image)
     {
         GameObject newGameObject = new GameObject(_image.name + " Water Renderer");
         newGameObject.transform.parent = transform;
 
         SpriteRenderer newRenderer = newGameObject.AddComponent<SpriteRenderer>();
         newRenderer.sprite = _image;
-
-        if (_flipAndDisplaced)
-        {
-            newRenderer.flipX = true;
-            newGameObject.transform.localPosition += Vector3.right * Screen.currentResolution.width / 100;
-        }
 
         return newRenderer;
     }

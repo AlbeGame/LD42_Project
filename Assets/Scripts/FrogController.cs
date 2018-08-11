@@ -57,7 +57,6 @@ public class FrogController : MonoBehaviour {
         else
             scale_fade = Vector2.one * 1.2f;
     }
-    
 
     void Jump(){
         flag = false;
