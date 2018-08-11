@@ -17,7 +17,7 @@ public class LilypadController : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        Move();
+        PoolCheck();
 	}
 
     public void EatLilypod(Vector2 world_point, float range){
@@ -129,12 +129,23 @@ public class LilypadController : MonoBehaviour {
     }
 
     bool hasBeenRendered = false;
-    private void Move()
+    float currentTimer;
+    private void PoolCheck()
     {
-        //transform.localPosition += (Vector3)speed;
-
-        if (!hasBeenRendered && lilyRenderer.isVisible)
-            hasBeenRendered = true;
+        if (!hasBeenRendered)
+        {
+            if (lilyRenderer.isVisible)
+                hasBeenRendered = true;
+            else if (currentTimer > 20)
+            {
+                if (lilySpawner == null)
+                    Destroy(this.gameObject);
+                else
+                    lilySpawner.ReturnLilyToPull(this);
+            }
+            else
+                currentTimer += Time.deltaTime;
+        }
         else if (hasBeenRendered && !lilyRenderer.isVisible)
         {
             if (lilySpawner == null)

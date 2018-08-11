@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class BugsSpawner : MonoBehaviour {
 
-    public GameObject Lilypad;
+    public GameObject BugPrefab;
     public float SpawnDelay = 1;
-    public float LilysSpeed = 2;
-    List<LilypadController> lilypadsPull = new List<LilypadController>();
+    public float BugsSpeed = 2;
+    List<BugAI> bugsPull = new List<BugAI>();
     
     Vector2 randomSpaceVector {
         get
@@ -20,38 +20,37 @@ public class BugsSpawner : MonoBehaviour {
     {
         if (currentTimer > SpawnDelay)
         {
-            SpawnLilypad();
+            SpawnBug();
             currentTimer = 0 - Random.Range(0, SpawnDelay);
         }
         else
             currentTimer += Time.deltaTime;
     }
 
-    public void SpawnLilypad()
+    public void SpawnBug()
     {
-        LilypadController newlily;
-        if (lilypadsPull.Count <= 0)
-            newlily = Instantiate(Lilypad, transform).GetComponent<LilypadController>();
+        BugAI newBug;
+        if (bugsPull.Count <= 0)
+            newBug = Instantiate(BugPrefab, transform).GetComponent<BugAI>();
         else
         {
-            newlily = lilypadsPull[0];
-            lilypadsPull.RemoveAt(0);
+            newBug = bugsPull[0];
+            bugsPull.RemoveAt(0);
         }
 
-        newlily.Init();
-        //newlily.SetLilySpawner(this);
-        newlily.transform.position = GetLilyOriginPosition();
-        newlily.SetSpeedVector((Camera.main.transform.position - newlily.transform.position + (Vector3)randomSpaceVector/100).normalized * LilysSpeed);
-        newlily.gameObject.SetActive(true);
+        newBug.SetBugSpawner(this);
+        newBug.transform.position = GetBugOriginPosition();
+        newBug.SetSpeed((Camera.main.transform.position - newBug.transform.position + (Vector3)randomSpaceVector/100).normalized * BugsSpeed);
+        newBug.gameObject.SetActive(true);
     }
 
-    public void ReturnLilyToPull(LilypadController _lily)
+    public void ReturnBugToPull(BugAI _lily)
     {
-        lilypadsPull.Add(_lily);
+        bugsPull.Add(_lily);
         _lily.gameObject.SetActive(false);
     }
 
-    Vector3 GetLilyOriginPosition()
+    Vector3 GetBugOriginPosition()
     {
         Vector3 niceOrigin = new Vector3();
 
