@@ -42,6 +42,7 @@ public class BugAI : MonoBehaviour {
                 StopAllCoroutines();
                 pad = null;
                 GetComponent<Rigidbody2D>().simulated = true;
+                transform.SetParent(null);
             }
             yield return new WaitForSeconds(4);
         }
@@ -53,7 +54,6 @@ public class BugAI : MonoBehaviour {
             speed = Random.Range(0.3f, 0.65f);
             pad.EatLilypod(transform.position, Random.Range(7f, 17f));
             cooldown = temp_cool_down;
-            transform.SetParent(null);
         }
     }
 
