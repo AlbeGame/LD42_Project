@@ -8,8 +8,13 @@ public class LilypodController : MonoBehaviour {
     private Texture2D source;
     int pixel_eat;
 
-	// Update is called once per frame
-	void Update () {
+    private void OnEnable()
+    {
+        Init();
+    }
+
+    // Update is called once per frame
+    void Update () {
         Move();
 	}
 
@@ -114,6 +119,11 @@ public class LilypodController : MonoBehaviour {
         if (!hasBeenRendered && lilyRenderer.isVisible)
             hasBeenRendered = true;
         else if (hasBeenRendered && !lilyRenderer.isVisible)
-            lilySpawner.ReturnLilyToPull(this);
+        {
+            if (lilySpawner == null)
+                Destroy(this.gameObject);
+            else
+                lilySpawner.ReturnLilyToPull(this);
+        }
     }
 }

@@ -19,17 +19,17 @@ public class BugAI : MonoBehaviour {
 	void Update () {
         transform.position -= ((Vector3)direction * Time.deltaTime/2) * speed;
 
-        if(cooldown <= 0)
-            AttemptBite();
-        else
+        //if(cooldown <= 0)
+        //    AttemptBite();
+        //else
             cooldown -= Time.deltaTime;
 	}
 
-    void AttemptBite(){
-        if(pad.CanLand(transform.position,10)){
-            speed = Random.Range(0.3f,0.65f);
-            pad.EatLilypod(transform.position,Random.Range(9f,20f));
-            cooldown = temp_cool_down;
-        }
-    }
+    //void AttemptBite(){
+    //    if(pad.CanLand(transform.position,10)){
+    //        speed = Random.Range(0.3f,0.65f);
+    //        pad.EatLilypod(transform.position,Random.Range(9f,20f));
+    //        cooldown = temp_cool_down;
+    //    }
+    //}
 }
