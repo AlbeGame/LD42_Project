@@ -5,6 +5,7 @@ using UnityEngine;
 public class LilypodController : MonoBehaviour {
     public Texture2D origin;
     private Texture2D source;
+    int pixel_eat;
 	// Use this for initialization
 	void Start () {
         source = new Texture2D(origin.width, origin.height);
@@ -19,30 +20,29 @@ public class LilypodController : MonoBehaviour {
 	void Update () {
         if(Input.GetKeyDown(KeyCode.Mouse0)){
             Vector2 mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            DeformPixels(mousepos,1);
+            DeformPixels(mousepos,30);
         }
 
 		
 	}
 
     void DeformPixels(Vector2 world_point, float range){
-        Vector2 position = transform.position;
-        //distanze w_p e position 0 1
-        // 0 1
+        Vector3 pos = world_point;
+        pos.z = transform.position.z;
+        pos = transform.InverseTransformPoint(pos);
 
+        int xPixel = Mathf.RoundToInt(pos.x * GetComponent<SpriteRenderer>().sprite.pixelsPerUnit);
+        int yPixel = Mathf.RoundToInt(pos.y * GetComponent<SpriteRenderer>().sprite.pixelsPerUnit);
 
         for(int x = 0; x < origin.width; x++) {
-            Debug.Log(position.x + x - (origin.width / 2f));
             for(int y = 0; y < origin.height; y++) {
                 
-                Vector2 pixe_to_world = new Vector2(
-                    (position.x + x - (origin.width / 2f)) / ((float)origin.width / 2),
-                    (position.y + y - (origin.height / 2f)) / ((float)origin.height / 2));
-                pixe_to_world.x = Mathf.Abs(pixe_to_world.x);
-                pixe_to_world.y = Mathf.Abs(pixe_to_world.y);
+                Vector2 pixels = new Vector2(x - (origin.width / 2f), y - (origin.height / 2f));
 
-                if(Vector2.Distance(pixe_to_world, world_point) < range)
+                if(Vector2.Distance(pixels,new Vector2(xPixel,yPixel)) < range){
                     source.SetPixel(x, y, Color.clear);
+                    pixel_eat++;
+                }
             }
         }
         source.Apply();
