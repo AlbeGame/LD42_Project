@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
-
 public class LilypodController : MonoBehaviour {
     public Texture2D origin;
     private Texture2D source;
@@ -12,6 +11,7 @@ public class LilypodController : MonoBehaviour {
     private int height;
     private int widht;
 	void Start () {
+<<<<<<< HEAD
         if(source)
             return;
         source = new Texture2D(origin.width, origin.height);
@@ -21,9 +21,13 @@ public class LilypodController : MonoBehaviour {
         source.Apply();
         s_renderer = GetComponent<SpriteRenderer>();
         s_renderer.sprite = Sprite.Create(source, new Rect(0, 0, origin.width, origin.height), new Vector2(0.5f, 0.5f));
+=======
+        Init();
+>>>>>>> 45cc3bab682338687c9a122bbd631a120e2ccacb
 	}
 	
 	void Update () {
+<<<<<<< HEAD
         if(source == null)
             Start();
 
@@ -32,11 +36,9 @@ public class LilypodController : MonoBehaviour {
             Vector2 mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             EatLilypod(mousepos,30);
         }
+=======
+>>>>>>> 45cc3bab682338687c9a122bbd631a120e2ccacb
 
-        if(Input.GetKeyDown(KeyCode.T)){
-            Vector2 mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        }
-		
 	}
 
     public void EatLilypod(Vector2 world_point, float range){
@@ -110,4 +112,39 @@ public class LilypodController : MonoBehaviour {
         return n;
     }
 
+    LilypondSpawner lilySpawner;
+    SpriteRenderer lilyRenderer;
+    public void Init()
+    {
+        source = new Texture2D(origin.width, origin.height);
+        for (int x = 0; x < origin.width; x++)
+            for (int y = 0; y < origin.height; y++)
+                source.SetPixel(x, y, origin.GetPixel(x, y));
+        source.Apply();
+
+        lilyRenderer = GetComponent<SpriteRenderer>();
+        lilyRenderer.sprite = Sprite.Create(source, new Rect(0, 0, origin.width, origin.height), new Vector2(0.5f, 0.5f));
+    }
+
+    Vector2 speed;
+    public void SetSpeedVector(Vector2 _speed)
+    {
+        speed = _speed;
+    }
+
+    public void SetLilySpawner(LilypondSpawner _spawner)
+    {
+        lilySpawner = _spawner;
+    }
+
+    bool hasBeenRendered = false;
+    private void Move()
+    {
+        transform.localPosition += (Vector3)speed;
+
+        if (!hasBeenRendered && lilyRenderer.isVisible)
+            hasBeenRendered = true;
+        else if (hasBeenRendered && !lilyRenderer.isVisible)
+            lilySpawner.ReturnLilyToPull(this);
+    }
 }
