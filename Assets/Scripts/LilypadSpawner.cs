@@ -6,6 +6,8 @@ public class LilypadSpawner : MonoBehaviour {
     public GameObject Lilypad;
     public float SpawnDelay = 1;
     public float LilysSpeed = 2;
+    public int MaxLilyAmount = 10;
+    int lilyAmount;
     List<LilypadController> lilypadsPull = new List<LilypadController>();
     
     Vector2 randomSpaceVector {
@@ -20,7 +22,8 @@ public class LilypadSpawner : MonoBehaviour {
     {
         if (currentTimer > SpawnDelay)
         {
-            SpawnLilypad();
+            if(lilyAmount < MaxLilyAmount)
+                SpawnLilypad();
             currentTimer = 0 - Random.Range(0, SpawnDelay);
         }
         else
@@ -31,7 +34,10 @@ public class LilypadSpawner : MonoBehaviour {
     {
         LilypadController newlily;
         if (lilypadsPull.Count <= 0)
+        {
+            lilyAmount++;
             newlily = Instantiate(Lilypad, transform).GetComponent<LilypadController>();
+        }
         else
         {
             newlily = lilypadsPull[0];
@@ -49,7 +55,10 @@ public class LilypadSpawner : MonoBehaviour {
     {
         LilypadController newlily;
         if (lilypadsPull.Count <= 0)
+        {
+            lilyAmount++;
             newlily = Instantiate(Lilypad, transform).GetComponent<LilypadController>();
+        }
         else
         {
             newlily = lilypadsPull[0];

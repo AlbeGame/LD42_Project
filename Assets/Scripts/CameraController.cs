@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        transform.position -= (Vector3)Vector2.left*Time.deltaTime*20;
-	}
+    public float Speed = 1;
+
+    private void LateUpdate()
+    {
+        Vector3 target = new Vector3(GameManager.I.Frog.transform.position.x, GameManager.I.Frog.transform.position.y, transform.position.z);
+
+        transform.position = Vector3.Lerp(transform.position, target, Speed);
+    }
 }

@@ -6,8 +6,10 @@ public class BugsSpawner : MonoBehaviour {
     public GameObject BugPrefab;
     public float SpawnDelay = 1;
     public float BugsSpeed = 2;
+    public int MaxBugsAmount = 50;
     List<BugAI> bugsPull = new List<BugAI>();
-    
+    int bugsAmount;
+
     Vector2 randomSpaceVector {
         get
         {
@@ -20,7 +22,8 @@ public class BugsSpawner : MonoBehaviour {
     {
         if (currentTimer > SpawnDelay)
         {
-            SpawnBug();
+            if(bugsAmount < MaxBugsAmount)
+                SpawnBug();
             currentTimer = 0 - Random.Range(0, SpawnDelay);
         }
         else
@@ -31,7 +34,10 @@ public class BugsSpawner : MonoBehaviour {
     {
         BugAI newBug;
         if (bugsPull.Count <= 0)
+        {
             newBug = Instantiate(BugPrefab, transform).GetComponent<BugAI>();
+            bugsAmount++;
+        }
         else
         {
             newBug = bugsPull[0];
@@ -47,6 +53,7 @@ public class BugsSpawner : MonoBehaviour {
     public void ReturnBugToPull(BugAI _lily)
     {
         bugsPull.Add(_lily);
+        bugsAmount--;
         _lily.gameObject.SetActive(false);
     }
 

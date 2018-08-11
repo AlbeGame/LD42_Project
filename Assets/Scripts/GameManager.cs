@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour {
 
     public FrogController Frog;
     public LilypadSpawner LilySpawner;
-
+    public WaterController WaterCtrl;
 
     private void Awake()
     {
