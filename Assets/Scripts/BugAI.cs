@@ -16,7 +16,6 @@ public class BugAI : MonoBehaviour {
         temp_cool_down = cooldown;
         direction = (transform.position - pad.transform.position).normalized;
 
-<<<<<<< HEAD
         StartCoroutine(StartBiting());
 	}
 
@@ -33,6 +32,7 @@ public class BugAI : MonoBehaviour {
         }
     }
 
+
     void AttemptBite(){
         if(pad.CanLand(transform.position,10)){
             speed = Random.Range(0.3f,0.65f);
@@ -40,19 +40,4 @@ public class BugAI : MonoBehaviour {
             cooldown = temp_cool_down;
         }
     }
-=======
-        //if(cooldown <= 0)
-        //    AttemptBite();
-        //else
-            cooldown -= Time.deltaTime;
-	}
-
-    //void AttemptBite(){
-    //    if(pad.CanLand(transform.position,10)){
-    //        speed = Random.Range(0.3f,0.65f);
-    //        pad.EatLilypod(transform.position,Random.Range(9f,20f));
-    //        cooldown = temp_cool_down;
-    //    }
-    //}
->>>>>>> 6403525bf0038a97f6e2e5773f63632041d2097a
 }

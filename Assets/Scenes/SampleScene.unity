@@ -150,8 +150,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22bf57130f9e14969b40afacf4f07bd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lilypond: {fileID: 1685889569719986, guid: c0f630881a19a4aa79c8c70459346e01, type: 2}
-  camera_pos: {fileID: 519420032}
+  Lilypad: {fileID: 1685889569719986, guid: c0f630881a19a4aa79c8c70459346e01, type: 2}
+  SpawnDelay: 1
+  LilysSpeed: 2
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -359,7 +360,7 @@ SpriteRenderer:
   m_Size: {x: 2.19, y: 2.3}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
 --- !u!4 &1608357577
 Transform:

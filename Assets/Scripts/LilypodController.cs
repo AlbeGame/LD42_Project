@@ -18,13 +18,13 @@ public class LilypodController : MonoBehaviour {
         Move();
 	}
 
-    void EatLilypod(Vector2 world_point, float range){
+    public void EatLilypod(Vector2 world_point, float range){
         Vector3 pos = world_point;
         pos.z = transform.position.z;
         pos = transform.InverseTransformPoint(pos);
 
-        int xPixel = Mathf.RoundToInt(pos.x * GetComponent<SpriteRenderer>().sprite.pixelsPerUnit);
-        int yPixel = Mathf.RoundToInt(pos.y * GetComponent<SpriteRenderer>().sprite.pixelsPerUnit);
+        int xPixel = Mathf.RoundToInt(pos.x * lilyRenderer.sprite.pixelsPerUnit);
+        int yPixel = Mathf.RoundToInt(pos.y * lilyRenderer.sprite.pixelsPerUnit);
 
         for(int x = 0; x < origin.width; x++) {
             for(int y = 0; y < origin.height; y++) {
@@ -42,13 +42,16 @@ public class LilypodController : MonoBehaviour {
     }
 
     //return true if you have space to 
-    bool CanLand(Vector2 w_pos,float radious){
+    public bool CanLand(Vector2 w_pos,float radious){
+        if(Vector2.Distance(transform.position, w_pos) > radious / 10f)
+            return false;
+        
         Vector3 pos = w_pos;
         pos.z = transform.position.z;
         pos = transform.InverseTransformPoint(pos);
 
-        int xPixel = Mathf.RoundToInt(pos.x * GetComponent<SpriteRenderer>().sprite.pixelsPerUnit);
-        int yPixel = Mathf.RoundToInt(pos.y * GetComponent<SpriteRenderer>().sprite.pixelsPerUnit);
+        int xPixel = Mathf.RoundToInt(pos.x * lilyRenderer.sprite.pixelsPerUnit);
+        int yPixel = Mathf.RoundToInt(pos.y * lilyRenderer.sprite.pixelsPerUnit);
 
         int good_pixel = 0;
         int bad_pixel = PixelsInRange(radious);
