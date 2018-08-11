@@ -7,47 +7,24 @@ public class LilypodController : MonoBehaviour {
     public Texture2D origin;
     private Texture2D source;
     int pixel_eat;
-    SpriteRenderer s_renderer;
-    private int height;
-    private int widht;
-	void Start () {
-<<<<<<< HEAD
-        if(source)
-            return;
-        source = new Texture2D(origin.width, origin.height);
-        for(int x = 0; x < origin.width; x++)
-            for(int y = 0; y < origin.height; y++)
-                source.SetPixel(x,y,origin.GetPixel(x,y));
-        source.Apply();
-        s_renderer = GetComponent<SpriteRenderer>();
-        s_renderer.sprite = Sprite.Create(source, new Rect(0, 0, origin.width, origin.height), new Vector2(0.5f, 0.5f));
-=======
+
+    private void OnEnable()
+    {
         Init();
->>>>>>> 45cc3bab682338687c9a122bbd631a120e2ccacb
-	}
-	
-	void Update () {
-<<<<<<< HEAD
-        if(source == null)
-            Start();
+    }
 
-
-        if(Input.GetKeyDown(KeyCode.Mouse0)){
-            Vector2 mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            EatLilypod(mousepos,30);
-        }
-=======
->>>>>>> 45cc3bab682338687c9a122bbd631a120e2ccacb
-
+    // Update is called once per frame
+    void Update () {
+        Move();
 	}
 
-    public void EatLilypod(Vector2 world_point, float range){
+    void EatLilypod(Vector2 world_point, float range){
         Vector3 pos = world_point;
         pos.z = transform.position.z;
         pos = transform.InverseTransformPoint(pos);
 
-        int xPixel = Mathf.RoundToInt(pos.x * s_renderer.sprite.pixelsPerUnit);
-        int yPixel = Mathf.RoundToInt(pos.y * s_renderer.sprite.pixelsPerUnit);
+        int xPixel = Mathf.RoundToInt(pos.x * GetComponent<SpriteRenderer>().sprite.pixelsPerUnit);
+        int yPixel = Mathf.RoundToInt(pos.y * GetComponent<SpriteRenderer>().sprite.pixelsPerUnit);
 
         for(int x = 0; x < origin.width; x++) {
             for(int y = 0; y < origin.height; y++) {
@@ -65,16 +42,13 @@ public class LilypodController : MonoBehaviour {
     }
 
     //return true if you have space to 
-    public bool CanLand(Vector2 w_pos,float radious){
-        if(Vector2.Distance(transform.position, w_pos) > radious/10f)
-            return false;
-        
+    bool CanLand(Vector2 w_pos,float radious){
         Vector3 pos = w_pos;
         pos.z = transform.position.z;
         pos = transform.InverseTransformPoint(pos);
 
-        int xPixel = Mathf.RoundToInt(pos.x * s_renderer.sprite.pixelsPerUnit);
-        int yPixel = Mathf.RoundToInt(pos.y * s_renderer.sprite.pixelsPerUnit);
+        int xPixel = Mathf.RoundToInt(pos.x * GetComponent<SpriteRenderer>().sprite.pixelsPerUnit);
+        int yPixel = Mathf.RoundToInt(pos.y * GetComponent<SpriteRenderer>().sprite.pixelsPerUnit);
 
         int good_pixel = 0;
         int bad_pixel = PixelsInRange(radious);
@@ -145,6 +119,11 @@ public class LilypodController : MonoBehaviour {
         if (!hasBeenRendered && lilyRenderer.isVisible)
             hasBeenRendered = true;
         else if (hasBeenRendered && !lilyRenderer.isVisible)
-            lilySpawner.ReturnLilyToPull(this);
+        {
+            if (lilySpawner == null)
+                Destroy(this.gameObject);
+            else
+                lilySpawner.ReturnLilyToPull(this);
+        }
     }
 }

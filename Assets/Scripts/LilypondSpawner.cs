@@ -5,7 +5,15 @@ public class LilypondSpawner : MonoBehaviour {
 
     public GameObject Lilypad;
     public float SpawnDelay = 1;
+    public float LilysSpeed = 2;
     List<LilypodController> lilypadsPull = new List<LilypodController>();
+    
+    Vector2 randomSpaceVector {
+        get
+        {
+            return new Vector2(Random.Range(-Screen.currentResolution.width, Screen.currentResolution.width), Random.Range(-Screen.currentResolution.height, Screen.currentResolution.height));
+        }
+    }
 
     float currentTimer = 0;
     private void Update()
@@ -33,7 +41,7 @@ public class LilypondSpawner : MonoBehaviour {
         newlily.Init();
         newlily.SetLilySpawner(this);
         newlily.transform.position = GetLilyOriginPosition();
-        newlily.SetSpeedVector((newlily.transform.position - Camera.main.transform.position).normalized);
+        newlily.SetSpeedVector((Camera.main.transform.position - newlily.transform.position + (Vector3)randomSpaceVector/100).normalized * 0.01f * LilysSpeed);
         newlily.gameObject.SetActive(true);
     }
 
@@ -47,13 +55,13 @@ public class LilypondSpawner : MonoBehaviour {
     {
         Vector3 niceOrigin = new Vector3();
 
-        niceOrigin.x = Camera.main.transform.position.x + Random.Range(Screen.currentResolution.width / 2, Screen.currentResolution.width);
-        niceOrigin.y = Camera.main.transform.position.y + Random.Range(Screen.currentResolution.width / 2, Screen.currentResolution.width);
+        niceOrigin.x = (Camera.main.transform.position.x + Screen.currentResolution.width * Random.Range(.6f,1.1f))/100;
+        niceOrigin.y = (Camera.main.transform.position.y + Screen.currentResolution.height * Random.Range(.6f,1.1f)) / 100;
 
-        if (Random.Range(0, 1) < .5f)
+        if (Random.Range(0, 1f) < .5f)
             niceOrigin.x = -niceOrigin.x;
 
-        if (Random.Range(0, 1) < .5f)
+        if (Random.Range(0, 1f) < .5f)
             niceOrigin.y = -niceOrigin.y;
 
         return niceOrigin;
