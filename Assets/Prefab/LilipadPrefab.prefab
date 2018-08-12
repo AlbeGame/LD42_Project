@@ -22,7 +22,8 @@ GameObject:
   - component: {fileID: 212864931196800692}
   - component: {fileID: 114119519361433502}
   - component: {fileID: 50782337080869486}
-  - component: {fileID: 58615108461719558}
+  - component: {fileID: 60062528748482294}
+  - component: {fileID: 114857815725775930}
   m_Layer: 0
   m_Name: LilipadPrefab
   m_TagString: Untagged
@@ -37,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1685889569719986}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -4.936807, y: -5.396161, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -63,8 +64,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &58615108461719558
-CircleCollider2D:
+--- !u!60 &60062528748482294
+PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -76,8 +77,54 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 2.5
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 4, y: 4}
+    newSize: {x: 4, y: 4}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.925, y: -1.925}
+      - {x: 1.025, y: -1.915}
+      - {x: 1.055, y: -1.605}
+      - {x: 1.285, y: -1.595}
+      - {x: 1.305, y: -1.355}
+      - {x: 1.535, y: -1.345}
+      - {x: 1.565, y: -0.775}
+      - {x: 1.865, y: -0.755}
+      - {x: 1.865, y: 0.895}
+      - {x: 1.555, y: 0.925}
+      - {x: 1.545, y: 1.405}
+      - {x: 1.295, y: 1.435}
+      - {x: 1.285, y: 1.735}
+      - {x: 1.055, y: 1.745}
+      - {x: 1.015, y: 1.995}
+      - {x: 0.435, y: 1.985}
+      - {x: 0.425, y: 1.755}
+      - {x: 0.175, y: 1.715}
+      - {x: 0.155, y: 1.165}
+      - {x: -0.105, y: 1.185}
+      - {x: -0.105, y: 1.715}
+      - {x: -0.355, y: 1.755}
+      - {x: -0.365, y: 1.985}
+      - {x: -0.935, y: 1.995}
+      - {x: -0.975, y: 1.745}
+      - {x: -1.225, y: 1.705}
+      - {x: -1.235, y: 1.425}
+      - {x: -1.475, y: 1.405}
+      - {x: -1.475, y: 0.995}
+      - {x: -1.785, y: 0.905}
+      - {x: -1.795, y: -0.755}
+      - {x: -1.475, y: -0.795}
+      - {x: -1.465, y: -1.345}
+      - {x: -1.235, y: -1.355}
+      - {x: -1.215, y: -1.595}
+      - {x: -0.965, y: -1.615}
+      - {x: -0.955, y: -1.915}
 --- !u!114 &114119519361433502
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -89,9 +136,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 319c7a6295e0e499182f31224c61aafe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  origin: {fileID: 2800000, guid: 9c32621700bac00428bcbfc2fe73d9bd, type: 3}
-  starting_pixels: 0
-  pixel_eat: 0
+  origin: {fileID: 2800000, guid: fd6d60b4a8a0046188c5d0634b53b54c, type: 3}
+  TextureSize: 400
+--- !u!114 &114857815725775930
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1685889569719986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c55c83d4c4dd1145ad5fbbab3c3df36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AlphaTolerance: 20
+  DistanceThreshold: 7
+  Scale: 1
+  Decompose: 0
+  RunInPlayMode: 0
+  UseCache: 0
+  lastAlphaTolerance: 20
+  lastScale: 1
+  lastDistanceThreshold: 7
+  lastDecompose: 0
+  lastSprite: {fileID: 0}
+  lastRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 400
+    height: 400
+  lastOffset: {x: 200, y: 200}
+  lastPixelsPerUnit: 100
+  lastFlipX: 0
+  lastFlipY: 0
+  editorCache: []
 --- !u!212 &212864931196800692
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -132,7 +211,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 5.12, y: 5.12}
+  m_Size: {x: 4, y: 4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0

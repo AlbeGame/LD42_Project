@@ -19,10 +19,11 @@ public class FrogController : MonoBehaviour {
     //starting distance between start->end
     float start_dist;
 
-    public bool flag;
+    private bool flag;
     private bool position_reached;
 
-    LilypadController parentLily;
+    [HideInInspector]
+    public LilypadController parentLily;
     CircleCollider2D coll;
 
     Animator animCtrl;
@@ -88,16 +89,17 @@ public class FrogController : MonoBehaviour {
     }
 
     void IdentifyAction(){
-        if(key_hold_time > jump_hold_time_threshold){
+        if(key_hold_time > jump_hold_time_threshold) {
             float force = 1 + (key_hold_time - jump_hold_time_threshold);
             Vector2 mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 direction = ((Vector2)transform.position - mousepos).normalized;
 
-            Jump(direction,force,Vector2.one * 1.4f);
+            Jump(direction, force, Vector2.one * 1.4f);
+        } 
+        else {
+            Vector2 mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Eat(mousepos);
         }
-        else
-            Eat();
-        
     }
 
     void FlipScale() {
@@ -118,7 +120,7 @@ public class FrogController : MonoBehaviour {
         flag = false;
         position_reached = false;
         float rot_z = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0f, 0f, rot_z + 90);
+        transform.localRotation = Quaternion.Euler(0f, 0f, rot_z + 90);
 
         fade_position = transform.position - (Vector3)direction*(force*2);
         start_dist = Vector2.Distance(transform.position, fade_position);
@@ -127,7 +129,11 @@ public class FrogController : MonoBehaviour {
     }
 
     FrogEatingController eatingCtrl;
-    public void Eat(){
+    public void Eat(Vector2 mousepos){
+        mousepos = mousepos.normalized;
+        float rot_z = Mathf.Atan2(mousepos.y, mousepos.x) * Mathf.Rad2Deg;
+        transform.localRotation = Quaternion.Euler(0f, 0f, rot_z - 90);
+
         animCtrl.SetTrigger("Eat");
     }
 

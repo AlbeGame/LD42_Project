@@ -6,9 +6,10 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class LilypadController : MonoBehaviour {
     public Texture2D origin;
+    public int TextureSize;
     private Texture2D source;
-    public int starting_pixels;
-    public int pixel_eat;
+    private int starting_pixels;
+    private int pixel_eat;
     int width;
     int height;
     private bool collasped;
@@ -22,7 +23,7 @@ public class LilypadController : MonoBehaviour {
         if(Collapse() && !collasped){
             collasped = true;
             Debug.Log("Collapsed");
-            DestroyLilypod();
+            //DestroyLilypod();
         }
 	}
 
@@ -52,12 +53,15 @@ public class LilypadController : MonoBehaviour {
                 if(ManatthanDistance(pixels, new Vector2(xPixel, yPixel)) < range) {
                     if(pixel_eat % 30 == 0)
                         await Task.Delay(1);
-                    source.SetPixel(x, y, Color.clear);
+                    if(source)//i do this since when using thread there are issues
+                        source.SetPixel(x, y, Color.clear);
                     pixel_eat++;
                 }
             }
         }
-        source.Apply();
+
+        if(source)
+            source.Apply();
 
     }
 
@@ -69,7 +73,8 @@ public class LilypadController : MonoBehaviour {
 
         int xPixel = Mathf.RoundToInt(pos.x * lilyRenderer.sprite.pixelsPerUnit);
         int yPixel = Mathf.RoundToInt(pos.y * lilyRenderer.sprite.pixelsPerUnit);
-        if(ManatthanDistance(new Vector2(xPixel, yPixel), Vector2.zero) > width / 1.9f)
+
+        if(ManatthanDistance(new Vector2(xPixel, yPixel), Vector2.zero) > width / 2)
             return false;
         int good_pixel = 0;
         int bad_pixel = PixelsInRange(radious);
@@ -119,8 +124,7 @@ public class LilypadController : MonoBehaviour {
 
     LilypadSpawner lilySpawner;
     SpriteRenderer lilyRenderer;
-    public void Init()
-    {
+    public void Init(){
         width = origin.width;
         height = origin.height;
         source = new Texture2D(width, height);
@@ -129,6 +133,10 @@ public class LilypadController : MonoBehaviour {
                 source.SetPixel(x, y, origin.GetPixel(x, y));
         source.Apply();
 
+        TextureScale.Bilinear(source, TextureSize, TextureSize);
+
+        width = TextureSize;
+        height = TextureSize;
         lilyRenderer = GetComponent<SpriteRenderer>();
         lilyRenderer.sprite = Sprite.Create(source, new Rect(0, 0, width, height), new Vector2(0.5f, 0.5f));
         starting_pixels = ActivePixels();
@@ -176,7 +184,7 @@ public class LilypadController : MonoBehaviour {
         int n = 0;
         for(int x = 0; x < width; x++) {
             for(int y = 0 ; y < height; y++) {
-                if((int)origin.GetPixel(x,y).a != 0)
+                if((int)source.GetPixel(x,y).a != 0)
                     n++;
             }
         }
