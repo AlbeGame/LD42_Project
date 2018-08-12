@@ -132,7 +132,7 @@ public class FrogController : MonoBehaviour {
 
     FrogEatingController eatingCtrl;
     public void Eat(Vector2 mousepos){
-        mousepos = mousepos.normalized;
+        mousepos = (mousepos - (Vector2)transform.position).normalized;
         float rot_z = Mathf.Atan2(mousepos.y, mousepos.x) * Mathf.Rad2Deg;
         transform.localRotation = Quaternion.Euler(0f, 0f, rot_z - 90);
 

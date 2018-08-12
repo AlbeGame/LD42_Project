@@ -87,6 +87,14 @@ public class LilypadSpawner : MonoBehaviour {
         return niceOrigin;
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        LilypadController lily = collision.GetComponent<LilypadController>();
+
+        if (lily != null)
+            lily.Kill();
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;

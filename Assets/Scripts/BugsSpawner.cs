@@ -64,6 +64,14 @@ public class BugsSpawner : MonoBehaviour {
         return niceOrigin;
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        BugAI bug = collision.GetComponent<BugAI>();
+
+        if (bug != null)
+            bug.Kill();
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

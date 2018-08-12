@@ -163,21 +163,23 @@ public class LilypadController : MonoBehaviour {
                 hasBeenRendered = true;
             else if (currentTimer > 20)
             {
-                if (lilySpawner == null)
-                    Destroy(this.gameObject);
-                else
-                    lilySpawner.ReturnLilyToPull(this);
+                Kill();
             }
             else
                 currentTimer += Time.deltaTime;
         }
         else if (hasBeenRendered && !lilyRenderer.isVisible)
         {
-            if (lilySpawner == null)
-                Destroy(this.gameObject);
-            else
-                lilySpawner.ReturnLilyToPull(this);
+            Kill();
         }
+    }
+
+    public void Kill()
+    {
+        if (lilySpawner == null)
+            Destroy(this.gameObject);
+        else
+            lilySpawner.ReturnLilyToPull(this);
     }
 
     int ActivePixels(){
