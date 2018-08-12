@@ -22,7 +22,8 @@ public class GameManager : MonoBehaviour {
 
     private void Start()
     {
-        LilySpawner.SpawnLilypad(Camera.main.transform.position, Vector3.zero);
+        Vector3 startLilyPos = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, 0);
+        LilySpawner.SpawnLilypad(startLilyPos, Vector3.zero);
         Frog.SetParentLily(FindObjectOfType<LilypadController>());
     }
 }

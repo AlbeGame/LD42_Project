@@ -16,7 +16,6 @@ public class LilypadController : MonoBehaviour {
         Init();
     }
 
-
     // Update is called once per frame
     void Update () {
         PoolCheck();

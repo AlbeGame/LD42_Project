@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class BugsSpawner : MonoBehaviour {
 
-    public GameObject BugPrefab;
+    public GameObject BugPrefab1;
+    public GameObject BugPrefab2;
     public float SpawnDelay = 1;
     public float BugsSpeed = 2;
     public int MaxBugsAmount = 50;
@@ -35,7 +36,8 @@ public class BugsSpawner : MonoBehaviour {
         BugAI newBug;
         if (bugsPull.Count <= 0)
         {
-            newBug = Instantiate(BugPrefab, transform).GetComponent<BugAI>();
+            GameObject bugPrefab = Random.Range(0, 1f) < .5f ? BugPrefab1 : BugPrefab2;
+            newBug = Instantiate(bugPrefab, transform).GetComponent<BugAI>();
             bugsAmount++;
         }
         else
