@@ -8,6 +8,7 @@ public class BugAI: MonoBehaviour {
     private LilypadController pad;
 
     SpriteRenderer bugRenderer;
+    AudioController audioCtrl;
     BugsSpawner bugSpawner;
 
     float speed = 1;
@@ -18,6 +19,7 @@ public class BugAI: MonoBehaviour {
     float temp_cool_down;
 
     void Start() {
+        audioCtrl = GetComponent<AudioController>();
         temp_cool_down = cooldown;
         bugRenderer = GetComponentInChildren<SpriteRenderer>();
         InvokeRepeating("UpdateCollider", 0, 5);
@@ -57,6 +59,7 @@ public class BugAI: MonoBehaviour {
 
     void AttemptBite() {
         if(pad) {
+            audioCtrl.Play();
             speed = Random.Range(0.3f, 0.65f);
             pad.EatLilypod(transform.position, Random.Range(7f, 17f));
             cooldown = temp_cool_down;
