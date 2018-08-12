@@ -25,8 +25,10 @@ public class FrogController : MonoBehaviour {
     LilypadController parentLily;
     CircleCollider2D coll;
 
-    void Start () {
+    Animator animCtrl;
 
+    void Start () {
+        animCtrl = GetComponentInChildren<Animator>();
         coll = GetComponent<CircleCollider2D>();
         mid_fade_pos = Vector2.zero;
         fade_position = transform.position;
@@ -108,6 +110,8 @@ public class FrogController : MonoBehaviour {
     public void Jump(Vector2 direction,float force,Vector2 MaxScaleOnAir)
     {
         transform.parent = null;
+        animCtrl.SetTrigger("Jump");
+
 
         max_scale = MaxScaleOnAir;
         flag = false;
@@ -122,7 +126,8 @@ public class FrogController : MonoBehaviour {
     }
 
     public void Eat(){
-        Debug.Log("Eating");
+        animCtrl.SetTrigger("Eat");
+
     }
 
     public void SetParentLily(LilypadController _parentLily)
