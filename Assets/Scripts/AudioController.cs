@@ -10,9 +10,10 @@ public class AudioController : MonoBehaviour {
 	void Start () {
         sorce = GetComponent<AudioSource>();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    public void Play()
+    {
+        sorce.clip = Clips[Random.Range(0, Clips.Count)];
+        sorce.Play();
+    }
 }

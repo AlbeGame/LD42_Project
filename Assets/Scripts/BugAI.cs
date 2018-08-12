@@ -20,7 +20,6 @@ public class BugAI: MonoBehaviour {
     void Start() {
         temp_cool_down = cooldown;
         bugRenderer = GetComponentInChildren<SpriteRenderer>();
-        bugSpawner = GetComponent<BugsSpawner>();
         InvokeRepeating("UpdateCollider", 0, 5);
     }
 
@@ -89,7 +88,7 @@ public class BugAI: MonoBehaviour {
     }
 
     public void Kill() {
-        if(bugRenderer == null)
+        if(bugSpawner == null)
             Destroy(this.gameObject);
         else
             bugSpawner.ReturnBugToPull(this);

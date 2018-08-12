@@ -25,10 +25,12 @@ public class FrogController : MonoBehaviour {
     [HideInInspector]
     public LilypadController parentLily;
     CircleCollider2D coll;
+    AudioController audioCtrl;
 
     Animator animCtrl;
 
     void Start () {
+        audioCtrl = GetComponentInChildren<AudioController>();
         eatingCtrl = GetComponentInChildren<FrogEatingController>();
         animCtrl = GetComponentInChildren<Animator>();
         coll = GetComponent<CircleCollider2D>();
@@ -114,7 +116,7 @@ public class FrogController : MonoBehaviour {
     {
         transform.parent = null;
         animCtrl.SetTrigger("Jump");
-
+        audioCtrl.Play();
 
         max_scale = MaxScaleOnAir;
         flag = false;
