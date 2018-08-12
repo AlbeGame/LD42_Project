@@ -101,8 +101,7 @@ public class BugAI: MonoBehaviour {
         pad = ctrl;
         GetComponent<Collider2D>().isTrigger = true;
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        GetComponent<Rigidbody2D>().simulated = false;
-
+        GetComponent<Rigidbody2D>().isKinematic = true;
         Vector2 direction = (transform.position - pad.transform.position).normalized;
         StartCoroutine(StartBiting(direction));
         transform.SetParent(ctrl.transform);
@@ -111,7 +110,7 @@ public class BugAI: MonoBehaviour {
     private void Outside() {
         pad = null;
         GetComponent<Collider2D>().isTrigger = false;
-        GetComponent<Rigidbody2D>().simulated = true;
+        GetComponent<Rigidbody2D>().useFullKinematicContacts = true;
         StopAllCoroutines();
         transform.SetParent(null);
         SetSpeed(velocity);

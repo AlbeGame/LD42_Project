@@ -2188,7 +2188,7 @@ Prefab:
     - target: {fileID: 114344760757876402, guid: 60eee626a1443af4e9804d92017e4608,
         type: 2}
       propertyPath: SpawnInfo.DelayBetweenSpawns
-      value: 10
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114344760757876402, guid: 60eee626a1443af4e9804d92017e4608,
         type: 2}
