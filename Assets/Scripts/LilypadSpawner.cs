@@ -8,7 +8,8 @@ public class LilypadSpawner : MonoBehaviour {
     public float LilysSpeed = 2;
     public int MaxLilyAmount = 10;
     int lilyAmount;
-    List<LilypadController> lilypadsPull = new List<LilypadController>();
+
+    public List<LilypadController> lilypadsPull = new List<LilypadController>();
     
     Vector2 randomSpaceVector {
         get
