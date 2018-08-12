@@ -3,13 +3,10 @@ using UnityEngine;
 
 public class BugsSpawner : MonoBehaviour {
 
-    public GameObject BugPrefab1;
-    public GameObject BugPrefab2;
-    public float SpawnDelay = 1;
+    public Spawner2D SpawnInfo;
     public float BugsSpeed = 2;
-    public int MaxBugsAmount = 50;
     List<BugAI> bugsPull = new List<BugAI>();
-    int bugsAmount;
+    List<BugAI> bugsActive = new List<BugAI>();
 
     Vector2 randomSpaceVector {
         get
@@ -21,11 +18,11 @@ public class BugsSpawner : MonoBehaviour {
     float currentTimer = 0;
     private void Update()
     {
-        if (currentTimer > SpawnDelay)
+        if (currentTimer > SpawnInfo.DelayBetweenSpawns)
         {
-            if(bugsAmount < MaxBugsAmount)
+            if(bugsActive.Count < SpawnInfo.MaxAmunt)
                 SpawnBug();
-            currentTimer = 0 - Random.Range(0, SpawnDelay);
+            currentTimer = 0 - Random.Range(0, SpawnInfo.DelayBetweenSpawns);
         }
         else
             currentTimer += Time.deltaTime;
@@ -36,13 +33,13 @@ public class BugsSpawner : MonoBehaviour {
         BugAI newBug;
         if (bugsPull.Count <= 0)
         {
-            GameObject bugPrefab = Random.Range(0, 1f) < .5f ? BugPrefab1 : BugPrefab2;
-            newBug = Instantiate(bugPrefab, transform).GetComponent<BugAI>();
-            bugsAmount++;
+            newBug = Instantiate(SpawnInfo.GetRandomSpawnable(), transform).GetComponent<BugAI>();
+            bugsActive.Add(newBug);
         }
         else
         {
             newBug = bugsPull[0];
+            bugsActive.Add(newBug);
             bugsPull.RemoveAt(0);
         }
 
@@ -52,11 +49,16 @@ public class BugsSpawner : MonoBehaviour {
         newBug.gameObject.SetActive(true);
     }
 
-    public void ReturnBugToPull(BugAI _lily)
+    public void ReturnBugToPull(BugAI _bug)
     {
-        bugsPull.Add(_lily);
-        bugsAmount--;
-        _lily.gameObject.SetActive(false);
+        bugsPull.Add(_bug);
+        bugsActive.Remove(_bug);
+        _bug.gameObject.SetActive(false);
+    }
+
+    public List<BugAI> GetBugs()
+    {
+        return bugsActive;
     }
 
     Vector3 GetBugOriginPosition()
@@ -73,5 +75,12 @@ public class BugsSpawner : MonoBehaviour {
             niceOrigin.y = -niceOrigin.y;
 
         return niceOrigin;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawWireCube(SpawnInfo.Center, SpawnInfo.Size);
     }
 }

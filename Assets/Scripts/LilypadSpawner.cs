@@ -3,13 +3,10 @@ using UnityEngine;
 
 public class LilypadSpawner : MonoBehaviour {
 
-    public GameObject Lilypad;
-    public float SpawnDelay = 1;
+    public Spawner2D SpawnInfo = new Spawner2D();
     public float LilysSpeed = 2;
-    public int MaxLilyAmount = 10;
-    int lilyAmount;
     List<LilypadController> lilypadsPull = new List<LilypadController>();
-    
+    List<LilypadController> lilypadsActive = new List<LilypadController>();
     Vector2 randomSpaceVector {
         get
         {
@@ -20,11 +17,11 @@ public class LilypadSpawner : MonoBehaviour {
     float currentTimer = 0;
     private void Update()
     {
-        if (currentTimer > SpawnDelay)
+        if (currentTimer > SpawnInfo.DelayBetweenSpawns)
         {
-            if(lilyAmount < MaxLilyAmount)
+            if(lilypadsActive.Count < SpawnInfo.MaxAmunt)
                 SpawnLilypad();
-            currentTimer = 0 - Random.Range(0, SpawnDelay);
+            currentTimer = 0 - Random.Range(0, SpawnInfo.DelayBetweenSpawns);
         }
         else
             currentTimer += Time.deltaTime;
@@ -35,12 +32,13 @@ public class LilypadSpawner : MonoBehaviour {
         LilypadController newlily;
         if (lilypadsPull.Count <= 0)
         {
-            lilyAmount++;
-            newlily = Instantiate(Lilypad, transform).GetComponent<LilypadController>();
+            newlily = Instantiate(SpawnInfo.GetRandomSpawnable(), transform).GetComponent<LilypadController>();
+            lilypadsActive.Add(newlily);
         }
         else
         {
             newlily = lilypadsPull[0];
+            lilypadsActive.Add(newlily);
             lilypadsPull.RemoveAt(0);
         }
 
@@ -56,12 +54,13 @@ public class LilypadSpawner : MonoBehaviour {
         LilypadController newlily;
         if (lilypadsPull.Count <= 0)
         {
-            lilyAmount++;
-            newlily = Instantiate(Lilypad, transform).GetComponent<LilypadController>();
+            newlily = Instantiate(SpawnInfo.GetRandomSpawnable(), transform).GetComponent<LilypadController>();
+            lilypadsActive.Add(newlily);
         }
         else
         {
             newlily = lilypadsPull[0];
+            lilypadsActive.Add(newlily);
             lilypadsPull.RemoveAt(0);
         }
 
@@ -72,9 +71,15 @@ public class LilypadSpawner : MonoBehaviour {
         newlily.gameObject.SetActive(true);
     }
 
+    public List<LilypadController> GetLilipads()
+    {
+        return lilypadsActive;
+    }
+
     public void ReturnLilyToPull(LilypadController _lily)
     {
         lilypadsPull.Add(_lily);
+        lilypadsActive.Remove(_lily);
         _lily.gameObject.SetActive(false);
     }
 
@@ -92,5 +97,30 @@ public class LilypadSpawner : MonoBehaviour {
             niceOrigin.y = -niceOrigin.y;
 
         return niceOrigin;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+
+        Gizmos.DrawWireCube(SpawnInfo.Center, SpawnInfo.Size);
+    }
+
+}
+[System.Serializable]
+public struct Spawner2D
+{
+    public Vector2 Center;
+    public Vector2 Size;
+
+    public int MaxAmunt;
+    public float DelayBetweenSpawns;
+
+    public List<GameObject> SpawnableItems;
+
+    public GameObject GetRandomSpawnable()
+    {
+        int index = Random.Range(0, SpawnableItems.Count);
+        return SpawnableItems[index];
     }
 }

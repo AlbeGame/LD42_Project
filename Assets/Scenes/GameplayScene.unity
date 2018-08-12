@@ -198,6 +198,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114323884372024734, guid: e925fd92504fe104099ed030f60af87b,
+        type: 2}
+      propertyPath: SpawnInfo.SpawnableItems.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4059242517484042, guid: e925fd92504fe104099ed030f60af87b, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -249,6 +254,43 @@ Prefab:
     - target: {fileID: 114323884372024734, guid: e925fd92504fe104099ed030f60af87b,
         type: 2}
       propertyPath: BugPrefab2
+      value: 
+      objectReference: {fileID: 1707263716372432, guid: 1527002fb2d12854aae634a1a1579077,
+        type: 2}
+    - target: {fileID: 114323884372024734, guid: e925fd92504fe104099ed030f60af87b,
+        type: 2}
+      propertyPath: SpawnInfo.Center.x
+      value: -11.34
+      objectReference: {fileID: 0}
+    - target: {fileID: 114323884372024734, guid: e925fd92504fe104099ed030f60af87b,
+        type: 2}
+      propertyPath: SpawnInfo.Size.x
+      value: -1.79
+      objectReference: {fileID: 0}
+    - target: {fileID: 114323884372024734, guid: e925fd92504fe104099ed030f60af87b,
+        type: 2}
+      propertyPath: SpawnInfo.Size.y
+      value: 8.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 114323884372024734, guid: e925fd92504fe104099ed030f60af87b,
+        type: 2}
+      propertyPath: SpawnInfo.MaxAmunt
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 114323884372024734, guid: e925fd92504fe104099ed030f60af87b,
+        type: 2}
+      propertyPath: SpawnInfo.DelayBetweenSpawns
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114323884372024734, guid: e925fd92504fe104099ed030f60af87b,
+        type: 2}
+      propertyPath: SpawnInfo.SpawnableItems.Array.data[0]
+      value: 
+      objectReference: {fileID: 1707263716372432, guid: f6dfcc09d1b5f5f48b2481790c4f677c,
+        type: 2}
+    - target: {fileID: 114323884372024734, guid: e925fd92504fe104099ed030f60af87b,
+        type: 2}
+      propertyPath: SpawnInfo.SpawnableItems.Array.data[1]
       value: 
       objectReference: {fileID: 1707263716372432, guid: 1527002fb2d12854aae634a1a1579077,
         type: 2}
@@ -545,6 +587,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114344760757876402, guid: 60eee626a1443af4e9804d92017e4608,
+        type: 2}
+      propertyPath: SpawnInfo.SpawnableItems.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4159836094876756, guid: 60eee626a1443af4e9804d92017e4608, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -586,6 +633,37 @@ Prefab:
         type: 2}
       propertyPath: SpawnDelay
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114344760757876402, guid: 60eee626a1443af4e9804d92017e4608,
+        type: 2}
+      propertyPath: SpawnInfo.Size.x
+      value: 3.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 114344760757876402, guid: 60eee626a1443af4e9804d92017e4608,
+        type: 2}
+      propertyPath: SpawnInfo.Size.y
+      value: 9.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114344760757876402, guid: 60eee626a1443af4e9804d92017e4608,
+        type: 2}
+      propertyPath: SpawnInfo.DelayBetweenSpawns
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114344760757876402, guid: 60eee626a1443af4e9804d92017e4608,
+        type: 2}
+      propertyPath: SpawnInfo.MaxAmunt
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114344760757876402, guid: 60eee626a1443af4e9804d92017e4608,
+        type: 2}
+      propertyPath: SpawnInfo.SpawnableItems.Array.data[0]
+      value: 
+      objectReference: {fileID: 1685889569719986, guid: c0f630881a19a4aa79c8c70459346e01,
+        type: 2}
+    - target: {fileID: 114344760757876402, guid: 60eee626a1443af4e9804d92017e4608,
+        type: 2}
+      propertyPath: SpawnInfo.Center.x
+      value: -11.68
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 60eee626a1443af4e9804d92017e4608, type: 2}
