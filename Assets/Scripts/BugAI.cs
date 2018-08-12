@@ -4,6 +4,7 @@ using UnityEngine;
 using DigitalRuby.AdvancedPolygonCollider;
 
 public class BugAI : MonoBehaviour {
+    public float dist_to_eat;
     private LilypadController pad;
 
     SpriteRenderer bugRenderer;
@@ -11,7 +12,6 @@ public class BugAI : MonoBehaviour {
 
     float speed = 1;
     Vector2 velocity;
-    Vector2 direction;
 
     //time he needs to wait before eating another chunk
     float cooldown = 0.4f;
@@ -32,16 +32,20 @@ public class BugAI : MonoBehaviour {
     }
 
     private void Update() {
-        if(!pad){
-            //pad = GameManager.getcloserliliypad(myposition,mid_dist)
-        }else if(Vector2.Distance(transform.position,pad.transform.position)>1.4f){
+        
+        if(!pad && bugRenderer.isVisible){
+            LilypadController _pad = GameManager.I.GetCloseLilyPad(transform.position,dist_to_eat);
+            if(_pad)
+                Inside(_pad);
+        }else if(pad && Vector2.Distance(transform.position,pad.transform.position)>dist_to_eat+0.2f){
             Outside();
         }
     }
 
-    public IEnumerator StartBiting(){
+    public IEnumerator StartBiting(Vector2 direction){
+        Vector2 dir = direction;
         while (true){
-            transform.position -= ((Vector3)direction * Time.deltaTime / 2) * speed;
+            transform.position -= ((Vector3)dir * Time.deltaTime / 2) * speed;
 
             if(cooldown <= 0)
                 AttemptBite();
@@ -101,23 +105,22 @@ public class BugAI : MonoBehaviour {
     }
 
     private void Inside(LilypadController ctrl) {
-        if(!pad || pad != ctrl && bugRenderer.isVisible) {
-            pad = ctrl;
-            GetComponent<Collider2D>().isTrigger = true;
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            direction = (transform.position - pad.transform.position).normalized;
-            StartCoroutine(StartBiting());
-            transform.SetParent(ctrl.transform);
-        } 
+        pad = ctrl;
+        GetComponent<Collider2D>().isTrigger = true;
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        GetComponent<Rigidbody2D>().simulated = false;
+
+        Vector2 direction = (transform.position - pad.transform.position).normalized;
+        StartCoroutine(StartBiting(direction));
+        transform.SetParent(ctrl.transform);
     }
 
     private void Outside() {
-        if(pad) {
-            pad = null;
-            GetComponent<Collider2D>().isTrigger = true;
-            StopAllCoroutines();
-            transform.SetParent(null);
-            SetSpeed(velocity);
-        }
+        pad = null;
+        GetComponent<Collider2D>().isTrigger = false;
+        GetComponent<Rigidbody2D>().simulated = true;
+        StopAllCoroutines();
+        transform.SetParent(null);
+        SetSpeed(velocity);
     }
 }

@@ -26,4 +26,11 @@ public class GameManager : MonoBehaviour {
         LilySpawner.SpawnLilypad(startLilyPos, Vector3.zero);
         Frog.SetParentLily(FindObjectOfType<LilypadController>());
     }
+    public LilypadController GetCloseLilyPad(Vector2 from,float min_dist){
+        foreach(LilypadController l in LilySpawner.GetLilipads()) {
+            if(Vector2.Distance(l.transform.position, from) < min_dist)
+                return l;
+        }
+        return null;
+    }
 }
