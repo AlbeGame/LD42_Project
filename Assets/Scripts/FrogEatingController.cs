@@ -6,8 +6,6 @@ public class FrogEatingController : MonoBehaviour {
     public int StomachCapacity = 50;
     public int EatenBugs;
 
-    public List<SpriteRenderer> BugEatenPositions = new List<SpriteRenderer>();
-
     private void Start()
     {
         
@@ -22,8 +20,8 @@ public class FrogEatingController : MonoBehaviour {
             Sprite imageToUse = bug.GetComponentInChildren<SpriteRenderer>().sprite;
             bug.Kill();
             EatenBugs++;
-            int stomachIndex = (int)((float)EatenBugs/StomachCapacity * BugEatenPositions.Count);
-            BugEatenPositions[stomachIndex].sprite = imageToUse;
+            float stomachIndex = EatenBugs/StomachCapacity;
+            GameManager.I.UICtrl.StomachAdd(imageToUse, stomachIndex);
         }
     }
 }
