@@ -3,12 +3,14 @@ using System.Collections.Generic;
 
 public class FrogEatingController : MonoBehaviour {
 
+    public AudioController audioCtrl { get; private set; }
+
     public int StomachCapacity = 50;
     public int EatenBugs;
 
     private void Start()
     {
-        
+        audioCtrl = GetComponent<AudioController>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
