@@ -28,7 +28,7 @@ public class FrogController : MonoBehaviour {
     AudioController audioCtrl;
 
     Animator animCtrl;
-
+    public Transform marker;
     void Start () {
         audioCtrl = GetComponentInChildren<AudioController>();
         eatingCtrl = GetComponentInChildren<FrogEatingController>();
@@ -79,20 +79,35 @@ public class FrogController : MonoBehaviour {
             transform.parent = parentLily.transform;
     }
 
-    public void OnInputHold()
-    {
+    public void OnInputHold(){
         key_hold_time += Time.deltaTime;
+        ShowJumpMarker();
     }
 
     public void OnInputRelease()
     {
         IdentifyAction();
         key_hold_time = 0;
+        HideJumpMarker();
     }
 
+    void ShowJumpMarker(){
+        Vector2 mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 direction = ((Vector2)transform.position - mousepos).normalized;
+        float force = 1 + (key_hold_time - jump_hold_time_threshold) * 2.2f;
+        force = Mathf.Clamp(force, 0, 5);
+        marker.transform.localPosition = transform.position - new Vector3(direction.x*force, direction.y*force, 10);
+        marker.GetComponent<LineRenderer>().SetPosition(1, (Vector3)direction * (force/1.3f));
+    }
+
+
+    void HideJumpMarker(){
+        marker.transform.localPosition = new Vector2(-9999, 9999);
+    }
     void IdentifyAction(){
         if(key_hold_time > jump_hold_time_threshold) {
             float force = 1 + (key_hold_time - jump_hold_time_threshold);
+            force = Mathf.Clamp(force, 0, 3);
             Vector2 mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 direction = ((Vector2)transform.position - mousepos).normalized;
 
