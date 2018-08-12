@@ -23,7 +23,7 @@ public class BugAI : MonoBehaviour {
 	}
 
     public IEnumerator StartBiting(){
-        while(true){
+        while (true){
             transform.position -= ((Vector3)direction * Time.deltaTime / 2) * speed;
 
             if(cooldown <= 0)
@@ -77,27 +77,32 @@ public class BugAI : MonoBehaviour {
                 hasBeenRendered = true;
             else if (currentTimer > 20)
             {
-                if (bugRenderer == null)
-                    Destroy(this.gameObject);
-                else
-                    bugSpawner.ReturnBugToPull(this);
+                Kill();
             }
             else
                 currentTimer += Time.deltaTime;
         }
         else if (hasBeenRendered && !bugRenderer.isVisible)
         {
-            if (bugRenderer == null)
-                Destroy(this.gameObject);
-            else
-                bugSpawner.ReturnBugToPull(this);
+            Kill();
         }
+    }
+
+    public void Kill()
+    {
+        if (bugRenderer == null)
+            Destroy(this.gameObject);
+        else
+            bugSpawner.ReturnBugToPull(this);
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
         
-        if(!pad && collision.gameObject.GetComponent<LilypadController>()){
-            GetComponent<Rigidbody2D>().simulated = false;
+        if(!pad && collision.gameObject.GetComponent<LilypadController>())
+        {
+            Rigidbody2D rigid = GetComponent<Rigidbody2D>();
+            rigid.isKinematic = true;
+            GetComponent<Collider2D>().isTrigger = true;
             pad = collision.gameObject.GetComponent<LilypadController>();
             direction = (transform.position - pad.transform.position).normalized;
             StartCoroutine(StartBiting());

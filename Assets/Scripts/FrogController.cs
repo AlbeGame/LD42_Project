@@ -28,6 +28,7 @@ public class FrogController : MonoBehaviour {
     Animator animCtrl;
 
     void Start () {
+        eatingCtrl = GetComponentInChildren<FrogEatingController>();
         animCtrl = GetComponentInChildren<Animator>();
         coll = GetComponent<CircleCollider2D>();
         mid_fade_pos = Vector2.zero;
@@ -125,9 +126,9 @@ public class FrogController : MonoBehaviour {
         FlipScale();
     }
 
+    FrogEatingController eatingCtrl;
     public void Eat(){
         animCtrl.SetTrigger("Eat");
-
     }
 
     public void SetParentLily(LilypadController _parentLily)
