@@ -22,7 +22,7 @@ public class FrogEatingController : MonoBehaviour {
             Sprite imageToUse = bug.GetComponentInChildren<SpriteRenderer>().sprite;
             bug.Kill();
             EatenBugs++;
-            int stomachIndex = EatenBugs * StomachCapacity / BugEatenPositions.Count;
+            int stomachIndex = (int)((float)EatenBugs/StomachCapacity * BugEatenPositions.Count);
             BugEatenPositions[stomachIndex].sprite = imageToUse;
         }
     }
