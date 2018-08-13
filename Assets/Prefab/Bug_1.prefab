@@ -232,7 +232,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a6eb24229ca47e88dc22c292076f24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dist_to_eat: 2.8
+  EatingRadius: 2.5
+  SpeedOnLily: 0.6
+  BiteDelay: 0.3
 --- !u!212 &212808058812420532
 SpriteRenderer:
   m_ObjectHideFlags: 1

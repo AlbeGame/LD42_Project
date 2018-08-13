@@ -8,6 +8,8 @@ public class UIController : MonoBehaviour
     public Button StartButton;
 
     public GameObject Stomach;
+    Text pointsText;
+    int points;
     List<Image> stomachBugPositions = new List<Image>();
 
     public void Start()
@@ -20,18 +22,26 @@ public class UIController : MonoBehaviour
                 bugPos.color = Color.clear;
             }
         }
+
+        pointsText = Stomach.GetComponentInChildren<Text>();
     }
 
     public void ToggleMainMenu(bool _on)
     {
         StartButton.gameObject.SetActive(_on);
         Stomach.SetActive(!_on);
+        points = 0;
+        if(pointsText)
+            pointsText.text = "0";
         foreach (Image bugPos in stomachBugPositions)
                 bugPos.color = Color.clear;
     }
 
     public void StomachAdd(Sprite _image, float _percentage = -1)
     {
+        points++;
+        pointsText.text = points.ToString();
+
         if (_percentage >= 0)
         {
             Image img = stomachBugPositions[(int)(_percentage * stomachBugPositions.Count)];

@@ -4,23 +4,23 @@ using UnityEngine;
 using DigitalRuby.AdvancedPolygonCollider;
 
 public class BugAI: MonoBehaviour {
-    public float dist_to_eat;
+    public float EatingRadius;
     private LilypadController pad;
 
     SpriteRenderer bugRenderer;
     AudioController audioCtrl;
     BugsSpawner bugSpawner;
 
-    float speed = 1;
+    public float SpeedOnLily = 1;
     Vector2 velocity;
 
     //time he needs to wait before eating another chunk
-    float cooldown = 0.4f;
+    public float BiteDelay = 0.4f;
     float temp_cool_down;
 
     void Start() {
         audioCtrl = GetComponent<AudioController>();
-        temp_cool_down = cooldown;
+        temp_cool_down = BiteDelay;
         bugRenderer = GetComponentInChildren<SpriteRenderer>();
         InvokeRepeating("UpdateCollider", 0, 5);
     }
@@ -35,10 +35,10 @@ public class BugAI: MonoBehaviour {
     private void Update() {
 
         if(!pad && bugRenderer.isVisible) {
-            LilypadController _pad = GameManager.I.GetCloseLilyPad(transform.position, dist_to_eat);
+            LilypadController _pad = GameManager.I.GetCloseLilyPad(transform.position, EatingRadius);
             if(_pad)
                 Inside(_pad);
-        } else if(pad && Vector2.Distance(transform.position, pad.transform.position) > dist_to_eat + 0.2f) {
+        } else if(pad && Vector2.Distance(transform.position, pad.transform.position) > EatingRadius + 0.2f) {
             Outside();
         }
     }
@@ -46,12 +46,12 @@ public class BugAI: MonoBehaviour {
     public IEnumerator StartBiting(Vector2 direction) {
         Vector2 dir = direction;
         while(true) {
-            transform.position -= ((Vector3)dir * Time.deltaTime / 2) * speed;
+            transform.position -= ((Vector3)dir * Time.deltaTime / 2) * SpeedOnLily;
 
-            if(cooldown <= 0)
+            if(BiteDelay <= 0)
                 AttemptBite();
             else
-                cooldown -= Time.deltaTime;
+                BiteDelay -= Time.deltaTime;
 
             yield return new WaitForEndOfFrame();
         }
@@ -60,9 +60,8 @@ public class BugAI: MonoBehaviour {
     void AttemptBite() {
         if(pad) {
             audioCtrl.Play();
-            speed = Random.Range(0.3f, 0.65f);
             pad.EatLilypod(transform.position, Random.Range(7f, 17f));
-            cooldown = temp_cool_down;
+            BiteDelay = temp_cool_down;
         }
     }
 
