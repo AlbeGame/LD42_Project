@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 114718127586141864}
   - component: {fileID: 82486550503322834}
   m_Layer: 0
-  m_Name: Bug_fly
+  m_Name: Bug_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

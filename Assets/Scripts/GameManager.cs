@@ -30,12 +30,13 @@ public class GameManager : MonoBehaviour {
 
     public void StartGame()
     {
-        Vector3 startLilyPos = new Vector3(Camera.main.transform.position.x, Camera.main.transform.position.y, 0);
         LilySpawner.gameObject.SetActive(true);
         BugsSpawner.gameObject.SetActive(true);
-        LilySpawner.SpawnLilypad(startLilyPos, Vector3.right);
+        LilySpawner.SpawnLilypad();
         Frog.gameObject.SetActive(true);
-        Frog.SetParentLily(FindObjectOfType<LilypadController>());
+        LilypadController spawnedLily = GetCloseLilyPad(Frog.transform.position, 100);
+        Frog.transform.position = spawnedLily.transform.position;
+        Frog.SetParentLily(spawnedLily);
         UICtrl.ToggleMainMenu(false);
 
         inputCtrl.enabled = true;
