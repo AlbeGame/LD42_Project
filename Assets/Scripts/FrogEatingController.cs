@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class FrogEatingController : MonoBehaviour {
 
     public AudioController audioCtrl { get; private set; }
+    FrogController frog;
 
     public int StomachCapacity = 50;
     public int EatenBugs;
@@ -11,6 +12,11 @@ public class FrogEatingController : MonoBehaviour {
     private void Start()
     {
         audioCtrl = GetComponent<AudioController>();
+    }
+
+    public void SetFrog(FrogController _frog)
+    {
+        frog = _frog;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -24,6 +30,8 @@ public class FrogEatingController : MonoBehaviour {
             EatenBugs++;
             float stomachIndex = EatenBugs/StomachCapacity;
             GameManager.I.UICtrl.StomachAdd(imageToUse, stomachIndex);
+
+            frog.EatFeedback();
         }
     }
 }

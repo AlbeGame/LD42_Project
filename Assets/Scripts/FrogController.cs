@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using DG.Tweening;
 using UnityEngine;
 
 public class FrogController : MonoBehaviour {
@@ -32,6 +31,7 @@ public class FrogController : MonoBehaviour {
     void Start () {
         audioCtrl = GetComponentInChildren<AudioController>();
         eatingCtrl = GetComponentInChildren<FrogEatingController>();
+        eatingCtrl.SetFrog(this);
         animCtrl = GetComponentInChildren<Animator>();
         coll = GetComponent<CircleCollider2D>();
         mid_fade_pos = Vector2.zero;
@@ -40,7 +40,7 @@ public class FrogController : MonoBehaviour {
 	}
 	
     void Update () {
-        CalculateJumpScale();
+        //CalculateJumpScale();
         if(!position_reached)
             FadeToPosition();
 	
@@ -73,7 +73,7 @@ public class FrogController : MonoBehaviour {
     void OnJumpCompleted(){
         position_reached = true;
 
-        if (!parentLily.CanLand(transform.position, coll.radius / 2))
+        if (Vector2.Distance(parentLily.transform.position, transform.position)> 2)
             Debug.Log("Dead");
         else
             transform.parent = parentLily.transform;
@@ -93,23 +93,28 @@ public class FrogController : MonoBehaviour {
 
     void ShowJumpMarker(){
         Vector2 mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = ((Vector2)transform.position - mousepos).normalized;
-        float force = 1 + (key_hold_time - jump_hold_time_threshold) * 2.2f;
-        force = Mathf.Clamp(force, 0, 5);
-        marker.transform.localPosition = transform.position - new Vector3(direction.x*force, direction.y*force, 10);
-        marker.GetComponent<LineRenderer>().SetPosition(1, (Vector3)direction * (force/1.3f));
+        Vector2 direction = ((Vector2)transform.position - mousepos);
+        //float force = 1 + (key_hold_time - jump_hold_time_threshold) * 2.2f;
+        //force = Mathf.Clamp(force, 0, 1);
+        marker.transform.localPosition = transform.position - new Vector3(direction.x, direction.y,0);
+        marker.GetComponent<LineRenderer>().SetPosition(1, (Vector3)direction);
     }
 
+    public void JumpTo(Transform _objective, float _flyTime)
+    {
+        transform.DOJump(_objective.position, 1, 1, _flyTime).OnComplete(()=>OnJumpCompleted());
+    }
 
     void HideJumpMarker(){
         marker.transform.localPosition = new Vector2(-9999, 9999);
     }
+
     void IdentifyAction(){
         if(key_hold_time > jump_hold_time_threshold) {
             float force = 1 + (key_hold_time - jump_hold_time_threshold);
             force = Mathf.Clamp(force, 0, 3);
             Vector2 mousepos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 direction = ((Vector2)transform.position - mousepos).normalized;
+            Vector2 direction = ((Vector2)transform.position - mousepos);
 
             Jump(direction, force, Vector2.one * 1.4f);
         } 
@@ -139,10 +144,10 @@ public class FrogController : MonoBehaviour {
         float rot_z = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.localRotation = Quaternion.Euler(0f, 0f, rot_z + 90);
 
-        fade_position = transform.position - (Vector3)direction*(force*2);
+        fade_position = transform.position - (Vector3)direction/**(force*2)*/;
         start_dist = Vector2.Distance(transform.position, fade_position);
         mid_fade_pos = Vector2.Lerp(transform.position, fade_position, 0.5f);
-        FlipScale();
+        //FlipScale();
     }
 
     FrogEatingController eatingCtrl;
@@ -152,6 +157,11 @@ public class FrogController : MonoBehaviour {
         transform.localRotation = Quaternion.Euler(0f, 0f, rot_z - 90);
         eatingCtrl.audioCtrl.Play();
         animCtrl.SetTrigger("Eat");
+    }
+
+    public void EatFeedback()
+    {
+        transform.DOPunchScale(Vector3.one * 0.1f, 1).OnComplete(()=>transform.localScale = Vector3.one);
     }
 
     public void SetParentLily(LilypadController _parentLily)
