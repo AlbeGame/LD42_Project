@@ -52,6 +52,11 @@ public class GameManager : MonoBehaviour {
         BugsSpawner.gameObject.SetActive(false);
     }
 
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
     public LilypadController GetCloseLilyPad(Vector2 from,float min_dist){
         foreach(LilypadController l in LilySpawner.GetLilipads()) {
             if(Vector2.Distance(l.transform.position, from) < min_dist)
