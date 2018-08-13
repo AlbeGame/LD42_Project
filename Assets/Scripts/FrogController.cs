@@ -141,7 +141,7 @@ public class FrogController : MonoBehaviour {
         flag = false;
         position_reached = false;
         float rot_z = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        transform.localRotation = Quaternion.Euler(0f, 0f, rot_z + 90);
+        transform.rotation = Quaternion.Euler(0f, 0f, rot_z + 90);
 
         fade_position = transform.position - (Vector3)direction/**(force*2)*/;
         start_dist = Vector2.Distance(transform.position, fade_position);
@@ -153,7 +153,7 @@ public class FrogController : MonoBehaviour {
     public void Eat(Vector2 mousepos){
         mousepos = (mousepos - (Vector2)transform.position).normalized;
         float rot_z = Mathf.Atan2(mousepos.y, mousepos.x) * Mathf.Rad2Deg;
-        transform.localRotation = Quaternion.Euler(0f, 0f, rot_z - 90);
+        transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
         eatingCtrl.audioCtrl.Play();
         animCtrl.SetTrigger("Eat");
     }
