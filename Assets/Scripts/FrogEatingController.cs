@@ -28,7 +28,7 @@ public class FrogEatingController : MonoBehaviour {
             Sprite imageToUse = bug.GetComponentInChildren<SpriteRenderer>().sprite;
             bug.Kill();
             EatenBugs++;
-            float stomachIndex = EatenBugs/StomachCapacity;
+            float stomachIndex = (float)EatenBugs/StomachCapacity;
             GameManager.I.UICtrl.StomachAdd(imageToUse, stomachIndex);
 
             frog.EatFeedback();

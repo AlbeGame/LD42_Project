@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class UIController : MonoBehaviour
 {
-
     public Button StartButton;
 
     public GameObject Stomach;
