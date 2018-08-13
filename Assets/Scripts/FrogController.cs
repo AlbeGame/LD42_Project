@@ -23,7 +23,6 @@ public class FrogController : MonoBehaviour {
 
     [HideInInspector]
     public LilypadController parentLily;
-    CircleCollider2D coll;
     AudioController audioCtrl;
 
     Animator animCtrl;
@@ -33,7 +32,6 @@ public class FrogController : MonoBehaviour {
         eatingCtrl = GetComponentInChildren<FrogEatingController>();
         eatingCtrl.SetFrog(this);
         animCtrl = GetComponentInChildren<Animator>();
-        coll = GetComponent<CircleCollider2D>();
         mid_fade_pos = Vector2.zero;
         fade_position = transform.position;
         position_reached = true;
@@ -81,7 +79,8 @@ public class FrogController : MonoBehaviour {
 
     public void OnInputHold(){
         key_hold_time += Time.deltaTime;
-        ShowJumpMarker();
+        if (key_hold_time > jump_hold_time_threshold)
+            ShowJumpMarker();
     }
 
     public void OnInputRelease()
