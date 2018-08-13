@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
@@ -20,6 +19,7 @@ public class GameManager : MonoBehaviour {
         else
         {
             I = this;
+            DontDestroyOnLoad(gameObject);
         }
     }
 
@@ -30,15 +30,30 @@ public class GameManager : MonoBehaviour {
 
     public void StartGame()
     {
+        if(LilySpawner == null)
+            LilySpawner = FindObjectOfType<LilypadSpawner>();
         LilySpawner.gameObject.SetActive(true);
+
+        if (BugsSpawner == null)
+            BugsSpawner = FindObjectOfType<BugsSpawner>();
         BugsSpawner.gameObject.SetActive(true);
+
         LilySpawner.SpawnLilypad();
+
+        if(Frog == null)
+            Frog = FindObjectOfType<FrogController>();
         Frog.gameObject.SetActive(true);
+
         LilypadController spawnedLily = GetCloseLilyPad(Frog.transform.position, 100);
         Frog.transform.position = spawnedLily.transform.position;
         Frog.SetParentLily(spawnedLily);
+
+        if(UICtrl == null)
+            UICtrl = FindObjectOfType<UIController>();
         UICtrl.ToggleMainMenu(false);
 
+        if(inputCtrl == null)
+            inputCtrl = GetComponent<InputController>();
         inputCtrl.enabled = true;
     }
 
@@ -55,6 +70,18 @@ public class GameManager : MonoBehaviour {
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void Restart()
+    {
+        SceneManager.sceneLoaded += OnSceneReload;
+        SceneManager.LoadScene("GameplayScene");
+    }
+
+    public void OnSceneReload(Scene _scene, LoadSceneMode _mode)
+    {
+        StartGame();
+        SceneManager.sceneLoaded -= OnSceneReload;
     }
 
     public LilypadController GetCloseLilyPad(Vector2 from,float min_dist){

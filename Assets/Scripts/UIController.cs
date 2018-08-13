@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 public class UIController : MonoBehaviour
 {
-    public Button StartButton;
+    public GameObject MainMenu;
+    public GameObject GameplayMenu;
 
     public GameObject Stomach;
     Text pointsText;
@@ -22,13 +23,31 @@ public class UIController : MonoBehaviour
             }
         }
 
+        foreach (Button btn in FindObjectsOfType(typeof(Button)))
+        {
+            switch (btn.name)
+            {
+                case "QuitButton":
+                    btn.onClick.AddListener(GameManager.I.Quit);
+                    break;
+                case "StartButton":
+                    btn.onClick.AddListener(GameManager.I.StartGame);
+                    break;
+                case "RestartButton":
+                    btn.onClick.AddListener(GameManager.I.Restart);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         pointsText = Stomach.GetComponentInChildren<Text>();
     }
 
     public void ToggleMainMenu(bool _on)
     {
-        StartButton.gameObject.SetActive(_on);
-        Stomach.SetActive(!_on);
+        MainMenu.SetActive(_on);
+        GameplayMenu.SetActive(!_on);
         points = 0;
         if(pointsText)
             pointsText.text = "0";
