@@ -9,7 +9,6 @@ public class UIController : MonoBehaviour
 
     public GameObject Stomach;
     Text pointsText;
-    int points;
     List<Image> stomachBugPositions = new List<Image>();
 
     public void Start()
@@ -23,7 +22,8 @@ public class UIController : MonoBehaviour
             }
         }
 
-        foreach (Button btn in FindObjectsOfType(typeof(Button)))
+        Object[] buttons = FindObjectsOfType(typeof(Button));
+        foreach (Button btn in buttons)
         {
             switch (btn.name)
             {
@@ -35,6 +35,9 @@ public class UIController : MonoBehaviour
                     break;
                 case "RestartButton":
                     btn.onClick.AddListener(GameManager.I.Restart);
+                    break;
+                case "Stomach":
+                    btn.onClick.AddListener(StomachDigest);
                     break;
                 default:
                     break;
@@ -48,34 +51,48 @@ public class UIController : MonoBehaviour
     {
         MainMenu.SetActive(_on);
         GameplayMenu.SetActive(!_on);
-        points = 0;
-        if(pointsText)
-            pointsText.text = "0";
+        if (pointsText)
+            pointsText.text = GameManager.I.Points.ToString();
         foreach (Image bugPos in stomachBugPositions)
-                bugPos.color = Color.clear;
+            bugPos.color = Color.clear;
+    }
+
+    public void StomachDigest()
+    {
+        for (int i = stomachBugPositions.Count - 1; i > 0; i--)
+        {
+            if (stomachBugPositions[i].color.a > 0)
+            {
+                GameManager.I.PointsMultiplier += 0.3f;
+                //GameManager.I.LilySpawner.SpawnInfo.DelayBetweenSpawns /= GameManager.I.PointsMultiplier;
+                GameManager.I.BugsSpawner.SpawnInfo.DelayBetweenSpawns /= GameManager.I.PointsMultiplier;
+                stomachBugPositions[i].color = Color.clear;
+                return;
+            }
+        }
     }
 
     public void StomachAdd(Sprite _image, float _percentage = -1)
     {
-        points++;
-        pointsText.text = points.ToString();
+        GameManager.I.Points += (int)GameManager.I.PointsMultiplier;
+        pointsText.text = GameManager.I.Points.ToString();
 
-        if (_percentage >= 0)
+        //if (_percentage >= 0)
+        //{
+        //    Image img = stomachBugPositions[(int)(_percentage * stomachBugPositions.Count)];
+        //    img.sprite = _image;
+        //    img.color = Color.white;
+        //    return;
+        //}
+        //else
+        for (int i = 0; i < stomachBugPositions.Count; i++)
         {
-            Image img = stomachBugPositions[(int)(_percentage * stomachBugPositions.Count)];
-            img.sprite = _image;
-            img.color = Color.white;
-            return;
-        }
-        else
-            for (int i = 0; i < stomachBugPositions.Count; i++)
+            if (stomachBugPositions[i].color.a == 0)
             {
-                if (stomachBugPositions[i].color.a > 0)
-                {
-                    stomachBugPositions[i].sprite = _image;
-                    stomachBugPositions[i].color = Color.white;
-                    return;
-                }
+                stomachBugPositions[i].sprite = _image;
+                stomachBugPositions[i].color = Color.white;
+                return;
             }
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using DG.Tweening;
 
 public class AudioController : MonoBehaviour {
 
@@ -17,5 +18,10 @@ public class AudioController : MonoBehaviour {
         source.Play();
         if (source.loop)
             source.loop = false;
+    }
+
+    public void SetVolume(float _value, float _time = .2f)
+    {
+        source.DOFade(_value, _time);
     }
 }

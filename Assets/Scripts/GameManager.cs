@@ -12,6 +12,11 @@ public class GameManager : MonoBehaviour {
 
     InputController inputCtrl;
 
+    public int Points = 0;
+    public float PointsMultiplier;
+    float originalLilyDelay = -1;
+    float originalBugsDelay = -1;
+
     private void Awake()
     {
         if (I != null)
@@ -33,10 +38,16 @@ public class GameManager : MonoBehaviour {
         if(LilySpawner == null)
             LilySpawner = FindObjectOfType<LilypadSpawner>();
         LilySpawner.gameObject.SetActive(true);
+        if (originalLilyDelay == -1)
+            originalLilyDelay = LilySpawner.SpawnInfo.DelayBetweenSpawns;
+        LilySpawner.SpawnInfo.DelayBetweenSpawns /= PointsMultiplier;
 
         if (BugsSpawner == null)
             BugsSpawner = FindObjectOfType<BugsSpawner>();
         BugsSpawner.gameObject.SetActive(true);
+        if (originalBugsDelay == -1)
+            originalBugsDelay = BugsSpawner.SpawnInfo.DelayBetweenSpawns;
+        BugsSpawner.SpawnInfo.DelayBetweenSpawns /= PointsMultiplier;
 
         LilySpawner.SpawnLilypad();
 
