@@ -59,15 +59,18 @@ public class UIController : MonoBehaviour
 
     public void StomachDigest()
     {
+        if (stomachBugPositions[stomachBugPositions.Count - 1].color.a <= 0)
+            return;
+
+        GameManager.I.PointsMultiplier += 0.3f;
+        //GameManager.I.LilySpawner.SpawnInfo.DelayBetweenSpawns /= GameManager.I.PointsMultiplier;
+        GameManager.I.BugsSpawner.SpawnInfo.DelayBetweenSpawns /= GameManager.I.PointsMultiplier;
+
         for (int i = stomachBugPositions.Count - 1; i > 0; i--)
         {
             if (stomachBugPositions[i].color.a > 0)
             {
-                GameManager.I.PointsMultiplier += 0.3f;
-                //GameManager.I.LilySpawner.SpawnInfo.DelayBetweenSpawns /= GameManager.I.PointsMultiplier;
-                GameManager.I.BugsSpawner.SpawnInfo.DelayBetweenSpawns /= GameManager.I.PointsMultiplier;
                 stomachBugPositions[i].color = Color.clear;
-                return;
             }
         }
     }
